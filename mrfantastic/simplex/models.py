@@ -1,0 +1,96 @@
+from __future__ import unicode_literals
+
+from django.db import models
+
+from django.contrib.auth.models import User
+
+# Create your models here.
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+
+
+class Accounts(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.TextField(unique=True)
+    password = models.TextField()
+    last_name = models.TextField()
+    first_name = models.TextField()
+    address = models.TextField()
+    city = models.TextField()
+    date_created = models.DateTimeField()
+    modified_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'accounts'
+
+
+class AccountsMailing(models.Model):
+    email = models.TextField()
+    mailing_id = models.IntegerField(primary_key=True)
+    date_created = models.DateTimeField()
+
+    class Meta:
+        db_table = 'accounts_mailing'
+
+
+class AccountsPrints(models.Model):
+    email = models.TextField()
+    print_field = models.BigIntegerField(db_column='print', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    date_created = models.DateTimeField()
+
+    class Meta:
+        db_table = 'accounts_prints'
+
+
+class Comments(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    body = models.TextField()
+    author = models.ForeignKey('Accounts')
+    print_field = models.ForeignKey('Prints', models.DO_NOTHING, db_column='print')  # Field renamed because it was a Python reserved word.
+    created_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'comments'
+
+
+class Mailing(models.Model):
+    recipient = models.ForeignKey('Accounts' , on_delete=models.CASCADE)
+    id = models.BigIntegerField(primary_key=True)
+    last_name = models.TextField()
+    first_name = models.TextField()
+    address = models.TextField()
+    address2 = models.TextField()
+    city = models.TextField()
+    zipcode = models.CharField(max_length=10)
+    mail_state = models.TextField()
+    country = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'mailing'
+
+
+class Prints(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    author = models.OneToOneField('Accounts', on_delete=models.CASCADE)
+    title = models.TextField()
+    description = models.TextField()
+    file_directory = models.TextField()
+    file = models.TextField()
+    image_file = models.TextField()
+    thumbnail_file = models.TextField()
+    print_file = models.TextField()
+    price = models.DecimalField(max_digits=19, decimal_places=4)
+    tags = models.TextField()  # This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'prints'
