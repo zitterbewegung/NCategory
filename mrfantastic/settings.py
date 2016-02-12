@@ -12,6 +12,7 @@ import os
 
 import dj_database_url
 from decouple import Csv, config
+import raven
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,7 +36,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 INSTALLED_APPS = [
     # Project specific apps
     'mrfantastic.base',
-
+    'mrfantastic.simplex',
     # Third party apps
     'django_jinja',
 
@@ -46,8 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #Raven logging
+    'raven.contrib.django.raven_compat',
 ]
 
+RAVEN_CONFIG = {
+    'dsn': config('DSN')
+}
 for app in config('EXTRA_APPS', default='', cast=Csv()):
     INSTALLED_APPS.append(app)
 

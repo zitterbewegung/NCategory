@@ -28,6 +28,6 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --require-hashes --no-cache-dir -r requirements.txt
 
 COPY . /app
-RUN DEBUG=False SECRET_KEY=foo ALLOWED_HOSTS=localhost, DATABASE_URL= ./manage.py collectstatic --noinput -c
+RUN DEBUG=False SECRET_KEY=foo ALLOWED_HOSTS=localhost, DATABASE_URL=postgres://localhost/simplex_db DSN=https://762be8db9221413eb6079a4f0e2feb2e:225a22a4224c4fdcb2a8a12c2b6e5a16@app.getsentry.com/66980 ./manage.py collectstatic --noinput -c
 RUN chown webdev.webdev -R .
 USER webdev
