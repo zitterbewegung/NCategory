@@ -5,3 +5,5 @@ docs/_build
 .tox/
 MANIFEST
 .coverage
+
+.env~
