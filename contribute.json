@@ -1,0 +1,9 @@
+{
+  "name": "mrfantastic",
+  "description": "Back end and administration for ncategory. ",
+  "repository": {
+    "url": "https://github.com/mozilla/mrfantastic/",
+    "license": "MPL 2.0",
+    "tests": "https://travis-ci.org/mozilla/mrfantastic/"
+  }
+}

@@ -1,0 +1,5 @@
+[run]
+source = mrfantastic
+
+[report]
+omit = */migrations/*
