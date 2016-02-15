@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 
-class Accounts(models.Model):
+class Account(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(unique=True)
@@ -28,10 +28,9 @@ class Accounts(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'accounts'
+ 
 
-
-class AccountsMailing(models.Model):
+class AccountMailing(models.Model):
     email = models.TextField()
     mailing_id = models.IntegerField(primary_key=True)
     date_created = models.DateTimeField()
@@ -40,7 +39,7 @@ class AccountsMailing(models.Model):
         db_table = 'accounts_mailing'
 
 
-class AccountsPrints(models.Model):
+class AccountPrint(models.Model):
     email = models.TextField()
     print_field = models.BigIntegerField(db_column='print', blank=True, null=True)  # Field renamed because it was a Python reserved word.
     date_created = models.DateTimeField()
@@ -49,20 +48,19 @@ class AccountsPrints(models.Model):
         db_table = 'accounts_prints'
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     id = models.BigIntegerField(primary_key=True)
     body = models.TextField()
-    author = models.ForeignKey('Accounts')
-    print_field = models.ForeignKey('Prints', models.DO_NOTHING, db_column='print')  # Field renamed because it was a Python reserved word.
+    author = models.ForeignKey('Account')
+    print_field = models.ForeignKey('Print', models.DO_NOTHING, db_column='print')  # Field renamed because it was a Python reserved word.
     created_at = models.DateTimeField()
 
     class Meta:
-        managed = False
         db_table = 'comments'
 
 
 class Mailing(models.Model):
-    recipient = models.ForeignKey('Accounts' , on_delete=models.CASCADE)
+    recipient = models.ForeignKey('Account' , on_delete=models.CASCADE)
     id = models.BigIntegerField(primary_key=True)
     last_name = models.TextField()
     first_name = models.TextField()
@@ -74,13 +72,12 @@ class Mailing(models.Model):
     country = models.TextField()
 
     class Meta:
-        managed = False
         db_table = 'mailing'
 
 
-class Prints(models.Model):
+class Print(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    author = models.OneToOneField('Accounts', on_delete=models.CASCADE)
+    author = models.OneToOneField('Account', on_delete=models.CASCADE)
     title = models.TextField()
     description = models.TextField()
     file_directory = models.TextField()
@@ -92,5 +89,4 @@ class Prints(models.Model):
     tags = models.TextField()  # This field type is a guess.
 
     class Meta:
-        managed = False
         db_table = 'prints'

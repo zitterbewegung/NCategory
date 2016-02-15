@@ -66,4 +66,5 @@ raven==5.10.2 \
 contextlib2==0.5.1 \
     --hash=sha256:227c79e126e8a8904a81d162750581ed3d49af2395a3100be7067b7296d33d45
 
-    
+django-webpack-loader==0.2.4 \
+    --hash=sha256:e3e03ea8a2e4ca5df8b57a16cad8180a415b414d36defb5a51a78901677d97af
