@@ -12,6 +12,7 @@ import os
 
 import dj_database_url
 from decouple import Csv, config
+
 import raven
 
 
@@ -30,7 +31,14 @@ DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+AUTHENTICATION_BACKENDS = (
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,8 +58,14 @@ INSTALLED_APPS = [
 
     #Raven logging
     'raven.contrib.django.raven_compat',
+    # The Django sites framework is required
+    'django.contrib.sites',
+    #Social authentication
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
-
+SITE_ID = 1
 RAVEN_CONFIG = {
     'dsn': config('DSN')
 }
@@ -134,10 +148,13 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'session_csrf.context_processor',
+                'django.template.context_processors.request',
             ],
         }
     },
 ]
+
+
 
 # Django-CSP
 CSP_DEFAULT_SRC = (

@@ -7,6 +7,7 @@ from mrfantastic.base import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('allauth.urls')),
 
     # contribute.json url
     url(r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
