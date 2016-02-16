@@ -14,6 +14,8 @@ web:
     - DEBUG=True
     - ALLOWED_HOSTS=localhost,127.0.0.1,
     - SECRET_KEY=59114b6a-2858-4caf-8878-482a24ee9542
-    - DSN='https://762be8db9221413eb6079a4f0e2feb2e:225a22a4224c4fdcb2a8a12c2b6e5a16@app.getsentry.com/66980'
+    - DSN=https://762be8db9221413eb6079a4f0e2feb2e:225a22a4224c4fdcb2a8a12c2b6e5a16@app.getsentry.com/66980
+    - NEW_RELIC_LICENSE_KEY=001b141e3345317e86299f2337a9c8cd1718d348
+    - NEW_RELIC_APP_NAME=mrfantastic
   command:
     ./bin/run-dev.sh
