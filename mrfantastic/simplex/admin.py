@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Account, Tag, Comment, Address, Job , Print
+from .models import Account, AccountPrint, AccountMailing, Comment, Mailing, Print
 # Register your models here.
-admin.site.register(Tag)
 admin.site.register(Account)
 admin.site.register(Comment)
-admin.site.register(Address)
+admin.site.register(Mailing)
 admin.site.register(Print)
-admin.site.register(Job)
+admin.site.register(AccountPrint)
+admin.site.register(AccountMailing)

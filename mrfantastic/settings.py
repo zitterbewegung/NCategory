@@ -54,10 +54,6 @@ INSTALLED_APPS = [
 
 RAVEN_CONFIG = {
     'dsn': config('DSN')
-       
-    #'dsn': config('DSN'),
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
 }
 for app in config('EXTRA_APPS', default='', cast=Csv()):
     INSTALLED_APPS.append(app)
