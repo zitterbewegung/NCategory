@@ -119,6 +119,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = config('MEDIA_URL', '/media/')
 
+
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
 
 TEMPLATES = [
@@ -154,7 +155,13 @@ TEMPLATES = [
     },
 ]
 
-
+TEMPLATE_DIRS = (
+    # allauth templates: you could copy this directory into your
+    # project and tweak it according to your needs
+    # os.path.join(PROJECT_ROOT, 'templates', 'uniform', 'allauth'),
+    # example project specific templates /mrfantastic/templates/allauth
+    os.path.join(ROOT ,'mrfantastic', 'templates', 'allauth'),
+)
 
 # Django-CSP
 CSP_DEFAULT_SRC = (

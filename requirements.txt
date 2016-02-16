@@ -80,3 +80,5 @@ python3-openid==3.0.9 \
     --hash=sha256:ac84fe199629eb17f5ee8e6fb75b71904264f713266d18f88c1238ff4e4779f7
 django-allauth==0.24.1 \
     --hash=sha256:229a6a5a63ff55f9eb46d4dae3863ba775735bf60bfc16bf4e2042f214f18e1d
+django-bootstrap-form==3.2 \
+    --hash=sha256:015d6e89ea4f90efe68c883702f00a503cecc3cda5b0208b0a9e89eaaff89da3
