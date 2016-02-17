@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
     #Raven logging
     'raven.contrib.django.raven_compat',
     # The Django sites framework is required
@@ -64,7 +64,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'bungiesearch',
 ]
+BUNGIESEARCH = {
+    'URLS': ['0.0.0.0'], # No leading http:// or the elasticsearch client will complain.
+    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'}, # Must be a module path.
+    'SIGNALS': {'BUFFER_SIZE': 1},
+    'TIMEOUT': 5
+}
 SITE_ID = 1
 RAVEN_CONFIG = {
     'dsn': config('DSN')

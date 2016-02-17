@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 
 from django.contrib.auth.models import User
-from raven.contrib.django.raven_compat.models import client
 
+from bungiesearch.managers import BungiesearchManager
 
 # Create your models here.
 # This is an auto-generated Django model module.
@@ -50,7 +50,8 @@ class Print(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=4)
     tags = models.ManyToManyField(Tag)
     created_at = models.DateTimeField()
-
+    objects = BungiesearchManager()
+    
 class Account(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
