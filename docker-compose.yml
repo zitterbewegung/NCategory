@@ -1,5 +1,5 @@
 elasticsearch:
-  image: elasticsearch:latest
+  image: elasticsearch:2.1.1
   command: elasticsearch -Des.network.host=0.0.0.0
   ports:
     - "9200:9200"
@@ -14,6 +14,7 @@ web:
     - .:/app
   links:
     - db
+    - elasticsearch
   environment:
     - PYTHONDONTWRITEBYTECODE=1
     - DATABASE_URL=postgres://postgres@db/postgres

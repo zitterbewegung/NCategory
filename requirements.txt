@@ -86,12 +86,6 @@ kafka_python==1.0.0 \
     --hash=sha256:f78d7b396bc9f5d7b933bb3e0d4cf07bf7175fdb857d0be05724eec5a9692ccd
 six==1.10.0 \
     --hash=sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1
-bungiesearch==1.3.0 \
-    --hash=sha256:eafb5fa8236f087edc2bf94a1416b173823a3dfcecb4f94d2e303136b717bb00
-elasticsearch==2.1.0 \
-    --hash=sha256:a8074e1d1eefa8359bf3f86a9fc0b86ce12eb51c14f9fa32ec6b2bf67d13239d
-elasticsearch_dsl==0.0.11 \
-    --hash=sha256:59a76c4142478a1952bba6f9a9ca4fc7b029afb619e8ffcf0d135ce37ea692da
 python_dateutil==2.4.2 \
     --hash=sha256:2ae63cf475f0bd049b722fac20813d62aedc14957dd5a3bf00d120d2b5404460
 urllib3==1.14 \
@@ -104,7 +98,14 @@ billiard==3.3.0.22 \
    --hash=sha256:d216181387317f8696c6d1c80a2491258d037493c1f0c6eb58992a549481e77e
 celery==3.1.18 \
    --hash=sha256:dbf59618d5a9eff172d25021f36614be5af0501e4527975ca504b95863f14fed
-celery-bungiesearch==1.2.3 \
-   --hash=sha256:aa6a7121f725ef82e75def7a670edd8b978359d9ea9b82f6a211a0c977aa2fc2
-kombu==3.0.33 \
-   --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
+celery_haystack==0.10 \
+   --hash=sha256:ec1f39050661e033f554de99cb9393c2e94427667ff5401f16393b2a68f888fc
+django_appconf==1.0.1 \
+   --hash=sha256:3d9bc963d8008ae151d6c664f9fd55442705ea9b9e6d7ce77cdd40bf92d91f3a
+bungiesearch==1.3.0 \
+    --hash=sha256:eafb5fa8236f087edc2bf94a1416b173823a3dfcecb4f94d2e303136b717bb00
+elasticsearch==2.1.0 \
+    --hash=sha256:a8074e1d1eefa8359bf3f86a9fc0b86ce12eb51c14f9fa32ec6b2bf67d13239d
+elasticsearch_dsl==0.0.11 \
+    --hash=sha256:59a76c4142478a1952bba6f9a9ca4fc7b029afb619e8ffcf0d135ce37ea692da
+	    

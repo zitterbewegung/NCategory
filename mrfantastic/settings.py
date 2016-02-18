@@ -66,8 +66,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'bungiesearch',
 ]
+
 BUNGIESEARCH = {
-    'URLS': ['0.0.0.0'], # No leading http:// or the elasticsearch client will complain.
+    'URLS': ['elasticsearch'], # No leading http:// or the elasticsearch client will complain.
     'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'}, # Must be a module path.
     'SIGNALS': {'BUFFER_SIZE': 1},
     'TIMEOUT': 5

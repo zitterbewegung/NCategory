@@ -16,14 +16,12 @@ from bungiesearch.managers import BungiesearchManager
 # Feel free to rename the models, but don't rename db_table values or field names.
 
 class Comment(models.Model):
-    id = models.BigIntegerField(primary_key=True)
     body = models.TextField()
     # author = models.ForeignKey('Account')
     print_field = models.ForeignKey('Print', models.DO_NOTHING, db_column='print')  # Field renamed because it was a Python reserved word.
     created_at = models.DateTimeField()
 
 class Address(models.Model):
-    id = models.BigIntegerField(primary_key=True)
     last_name = models.TextField()
     first_name = models.TextField()
     address = models.TextField()
@@ -34,13 +32,11 @@ class Address(models.Model):
     country = models.TextField()
 
 class Tag(models.Model):
-    id = models.BigIntegerField(primary_key=True)
     category = models.TextField()
     confidence = models.FloatField()
 
 
 class Print(models.Model):
-    id = models.BigIntegerField(primary_key=True)
     title = models.TextField()
     description = models.TextField()
     file_path = models.TextField()
@@ -53,7 +49,6 @@ class Print(models.Model):
     objects = BungiesearchManager()
     
 class Account(models.Model):
-    id = models.BigIntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(unique=True)
     password = models.TextField()
