@@ -14,7 +14,8 @@ import dj_database_url
 from decouple import Csv, config
 #Celery
 from kombu import Exchange, Queue
- 
+
+
 import raven  #Exception tracking
 
 
@@ -120,7 +121,7 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 REDIS_HOST = os.environ.get('REDIS_PORT_6379_TCP_ADDR', '127.0.0.1')
  
-RABBIT_HOSTNAME = os.environ.get('RABBIT_PORT_5672_TCP', 'localhost:5672')
+RABBIT_HOSTNAME = os.environ.get('RABBIT_PORT_5672_TCP', 'rmq:5672')
  
 if RABBIT_HOSTNAME.startswith('tcp://'):
     RABBIT_HOSTNAME = RABBIT_HOSTNAME.split('//')[1]
@@ -129,8 +130,8 @@ BROKER_URL = os.environ.get('BROKER_URL',
                             '')
 if not BROKER_URL:
     BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
-        user=os.environ.get('RABBIT_ENV_USER', 'admin'),
-        password=os.environ.get('RABBIT_ENV_RABBITMQ_PASS', 'mypass'),
+        user=os.environ.get('RABBIT_ENV_USER', 'guest'),
+        password=os.environ.get('RABBIT_ENV_RABBITMQ_PASS', 'guest'),
         hostname=RABBIT_HOSTNAME,
         vhost=os.environ.get('RABBIT_ENV_VHOST', ''))
  
@@ -159,7 +160,7 @@ CELERY_DISABLE_RATE_LIMITS = False
 # By default we will ignore result
 # If you want to see results and try out tasks interactively, change it to False
 # Or change this setting on tasks level
-CELERY_IGNORE_RESULT = True
+CELERY_IGNORE_RESULT = False
 CELERY_SEND_TASK_ERROR_EMAILS = False
 CELERY_TASK_RESULT_EXPIRES = 600
  

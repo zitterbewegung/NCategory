@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from bungiesearch.managers import BungiesearchManager
-
+from datetime import datetime
 # Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
@@ -91,7 +91,7 @@ class Job(models.Model):
  
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    argument = models.PositiveIntegerField()
+    argument = models.PositiveIntegerField(null=True)
     result = models.IntegerField(null=True)
  
     def save(self, *args, **kwargs):
