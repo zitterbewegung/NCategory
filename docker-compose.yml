@@ -4,6 +4,15 @@ elasticsearch:
   ports:
     - "9200:9200"
     - "9300:9300"
+# redis container
+redis:
+  image: redis:3.0.7
+rabbitmq:
+  image: "rabbitmq:3.6.0"
+  hostname: "rmq"
+  ports:
+    - '5672:5672'
+    - '15672:15672'
 db:
   image: postgres:9.4
 web:
@@ -15,6 +24,8 @@ web:
   links:
     - db
     - elasticsearch
+    - rabbitmq
+    - worker
   environment:
     - PYTHONDONTWRITEBYTECODE=1
     - DATABASE_URL=postgres://postgres@db/postgres
@@ -26,3 +37,14 @@ web:
     - NEW_RELIC_APP_NAME=mrfantastic
   command:
     ./bin/run-dev.sh
+# container with redis worker
+worker:
+  build: .
+  volumes:
+    - .:/app
+  links:
+    - db:db
+    - rabbitmq:rabbit
+    - redis:redis
+  command: ./bin/run-celery.sh
+

@@ -47,6 +47,7 @@ class Print(models.Model):
     tags = models.ManyToManyField(Tag)
     created_at = models.DateTimeField()
     objects = BungiesearchManager()
+
     
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -61,8 +62,43 @@ class Account(models.Model):
     address = models.ManyToManyField(Address)
     prints = models.ManyToManyField(Print)
     comments = models.ManyToManyField(Comment)
-
-class Job(models.Model):
+class PrintJob(models.Model):
+    '''Created when a print has to be printed'''    
     mailing_address = models.ForeignKey(Account, on_delete=models.CASCADE)
     to_print = models.ForeignKey(Print, on_delete=models.CASCADE)
     date_created = models.DateTimeField()
+   
+#Jobs class for celery
+class Job(models.Model):
+    """Class describing a computational job"""
+ 
+    # currently, available types of job are:
+    TYPES = (
+        ('fibonacci', 'fibonacci'),
+        ('power', 'power'),
+    )
+ 
+    # list of statuses that job can have
+    STATUSES = (
+        ('pending', 'pending'),
+        ('started', 'started'),
+        ('finished', 'finished'),
+        ('failed', 'failed'),
+    )
+ 
+    type = models.CharField(choices=TYPES, max_length=20)
+    status = models.CharField(choices=STATUSES, max_length=20)
+ 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    argument = models.PositiveIntegerField()
+    result = models.IntegerField(null=True)
+ 
+    def save(self, *args, **kwargs):
+        """Save model and if job is in pending state, schedule it"""
+        super(Job, self).save(*args, **kwargs)
+        if self.status == 'pending':
+            from .tasks import TASK_MAPPING
+            task = TASK_MAPPING[self.type]
+            task.delay(job_id=self.id, n=self.argument)
+     
