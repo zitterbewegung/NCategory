@@ -5,7 +5,7 @@ python:
 services:
     - postgresql
 addons:
-  postgresql: "9.5"
+  postgresql: "9.3"
 before_script:
     - psql -c 'create database simplex_db;' -U postgres
 install:
