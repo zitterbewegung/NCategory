@@ -1,9 +1,9 @@
 sudo: false
 language: python
 python:
-  - "2.7"
+  - "3.5"
 addons:
-  postgresql: "9.4"
+  postgresql: "9.5"
 before_script:
   - createdb simplex_db
 install:
