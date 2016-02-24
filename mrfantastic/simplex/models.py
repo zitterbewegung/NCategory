@@ -14,7 +14,7 @@ class Comment(models.Model):
     # author = models.ForeignKey('Account')
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
-    
+
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
@@ -22,7 +22,7 @@ class Comment(models.Model):
         self.modified_at = timezone.now()
         return super(Comment, self).save(*args, **kwargs)
 
-        
+
 class Address(models.Model):
     last_name = models.TextField()
     first_name = models.TextField()
@@ -33,12 +33,12 @@ class Address(models.Model):
     mail_state = models.TextField()
     country = models.TextField()
 
-    
+
 class Tag(models.Model):
     category = models.TextField()
     confidence = models.FloatField()
 
-    
+
 class Print(models.Model):
     title = models.TextField()
     description = models.TextField()
@@ -51,7 +51,7 @@ class Print(models.Model):
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
     objects = BungiesearchManager()
-    
+
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
@@ -59,7 +59,7 @@ class Print(models.Model):
         self.modified_at = timezone.now()
         return super(Print, self).save(*args, **kwargs)
 
-    
+
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(unique=True)
@@ -91,13 +91,13 @@ class PrintJob(models.Model):
 
 class Job(models.Model):
     """Class describing a computational job for celery"""
- 
+
     # currently, available types of job are:
     TYPES = (
         ('fibonacci', 'fibonacci'),
         ('power', 'power'),
     )
- 
+
     # list of statuses that job can have
     STATUSES = (
         ('pending', 'pending'),
@@ -105,15 +105,15 @@ class Job(models.Model):
         ('finished', 'finished'),
         ('failed', 'failed'),
     )
- 
+
     type = models.CharField(choices=TYPES, max_length=20)
     status = models.CharField(choices=STATUSES, max_length=20)
- 
+
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField(default=timezone.now())
     argument = models.PositiveIntegerField(null=True)
     result = models.IntegerField(null=True)
- 
+
     def save(self, *args, **kwargs):
         """Save model and if job is in pending state, schedule it"""
         super(Job, self).save(*args, **kwargs)
@@ -126,4 +126,3 @@ class Job(models.Model):
             self.created_at = timezone.now()
         self.modified_at = timezone.now()
 
-     
