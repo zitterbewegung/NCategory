@@ -5,22 +5,24 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from bungiesearch.managers import BungiesearchManager
-from datetime import datetime
-# Create your models here.
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+
+from django.utils import timezone
+
 
 class Comment(models.Model):
     body = models.TextField()
     # author = models.ForeignKey('Account')
-    print_field = models.ForeignKey('Print', models.DO_NOTHING, db_column='print')  # Field renamed because it was a Python reserved word.
     created_at = models.DateTimeField()
+    modified_at = models.DateTimeField(default=timezone.now())
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_at = timezone.now()
+        return super(Comment, self).save(*args, **kwargs)
 
+        
 class Address(models.Model):
     last_name = models.TextField()
     first_name = models.TextField()
@@ -31,11 +33,12 @@ class Address(models.Model):
     mail_state = models.TextField()
     country = models.TextField()
 
+    
 class Tag(models.Model):
     category = models.TextField()
     confidence = models.FloatField()
 
-
+    
 class Print(models.Model):
     title = models.TextField()
     description = models.TextField()
@@ -46,7 +49,15 @@ class Print(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=4)
     tags = models.ManyToManyField(Tag)
     created_at = models.DateTimeField()
+    modified_at = models.DateTimeField(default=timezone.now())
     objects = BungiesearchManager()
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_at = timezone.now()
+        return super(Print, self).save(*args, **kwargs)
 
     
 class Account(models.Model):
@@ -57,20 +68,29 @@ class Account(models.Model):
     first_name = models.TextField()
     address = models.TextField()
     city = models.TextField()
-    date_created = models.DateTimeField()
-    modified_date = models.DateTimeField()
+    created_at = models.DateTimeField()
+    modified_at = models.DateTimeField(default=timezone.now())
     address = models.ManyToManyField(Address)
     prints = models.ManyToManyField(Print)
     comments = models.ManyToManyField(Comment)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_at = timezone.now()
+        return super(Account, self).save(*args, **kwargs)
+
+
 class PrintJob(models.Model):
-    '''Created when a print has to be printed'''    
+    """Created when a print has to be printed"""
     mailing_address = models.ForeignKey(Account, on_delete=models.CASCADE)
     to_print = models.ForeignKey(Print, on_delete=models.CASCADE)
     date_created = models.DateTimeField()
-   
-#Jobs class for celery
+
+
 class Job(models.Model):
-    """Class describing a computational job"""
+    """Class describing a computational job for celery"""
  
     # currently, available types of job are:
     TYPES = (
@@ -89,8 +109,8 @@ class Job(models.Model):
     type = models.CharField(choices=TYPES, max_length=20)
     status = models.CharField(choices=STATUSES, max_length=20)
  
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField(default=timezone.now())
     argument = models.PositiveIntegerField(null=True)
     result = models.IntegerField(null=True)
  
@@ -101,4 +121,9 @@ class Job(models.Model):
             from .tasks import TASK_MAPPING
             task = TASK_MAPPING[self.type]
             task.delay(job_id=self.id, n=self.argument)
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_at = timezone.now()
+
      
