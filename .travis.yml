@@ -7,7 +7,7 @@ services:
 addons:
   postgresql: "9.5"
 before_script:
-  - createdb simplex_db
+    - psql -c 'create database simplex_db;' -U postgres
 install:
   - pip install tox coveralls
 env:
