@@ -125,4 +125,3 @@ class Job(models.Model):
         if not self.id:
             self.created_at = timezone.now()
         self.modified_at = timezone.now()
-

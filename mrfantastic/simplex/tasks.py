@@ -3,6 +3,7 @@ from functools import wraps
 from .celeryconf import app
 from .models import Job
 
+
 # decorator to avoid code duplication
 
 def update_job(fn):
@@ -58,4 +59,3 @@ TASK_MAPPING = {
     'power': power,
     'fibonacci': fib
 }
-

@@ -11,12 +11,15 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import dj_database_url
+
 from decouple import Csv, config
-#Celery
+
 from kombu import Exchange, Queue
+#  Celery
 
+import raven  # NOQA
 
-import raven  #Exception tracking
+# Exception tracking
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -59,11 +62,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #Raven logging
+    # Raven logging
     'raven.contrib.django.raven_compat',
     # The Django sites framework is required
     'django.contrib.sites',
-    #Social authentication
+    # Social authentication
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -77,12 +80,13 @@ REST_FRAMEWORK = {
 }
 
 BUNGIESEARCH = {
-    'URLS': ['elasticsearch'], # No leading http:// or the elasticsearch client will complain.
-    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'}, # Must be a module path.
+    'URLS': ['elasticsearch'],  # No leading http:// or the elasticsearch client will complain.
+    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'},  # Must be a module path.
     'SIGNALS': {'BUFFER_SIZE': 1},
     'TIMEOUT': 5
 }
 SITE_ID = 1
+
 RAVEN_CONFIG = {
     'dsn': config('DSN')
 }
@@ -135,7 +139,9 @@ if not BROKER_URL:
         hostname=RABBIT_HOSTNAME,
         vhost=os.environ.get('RABBIT_ENV_VHOST', ''))
 
-# We don't want to have dead connections stored on rabbitmq, so we have to negotiate using heartbeats
+# We don't want to have dead connections stored on rabbitmq,
+# so we have to negotiate using heartbeats
+
 BROKER_HEARTBEAT = '?heartbeat=30'
 if not BROKER_URL.endswith(BROKER_HEARTBEAT):
     BROKER_URL += BROKER_HEARTBEAT
@@ -237,7 +243,7 @@ TEMPLATE_DIRS = (
     # project and tweak it according to your needs
     # os.path.join(PROJECT_ROOT, 'templates', 'uniform', 'allauth'),
     # example project specific templates /mrfantastic/templates/allauth
-    os.path.join(ROOT ,'mrfantastic', 'templates', 'allauth'),
+    os.path.join(ROOT, 'mrfantastic', 'templates', 'allauth'),
 )
 
 # Django-CSP
