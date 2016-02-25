@@ -7,3 +7,8 @@ MANIFEST
 .coverage
 
 .env~
+
+*.sh~
+
+*.py#
+/#docker-compose.yml#
