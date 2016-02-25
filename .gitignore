@@ -8,7 +8,11 @@ MANIFEST
 
 .env~
 
+
 *.sh~
 
-*.py#
 /#docker-compose.yml#
+
+*.py#
+
+*.py
