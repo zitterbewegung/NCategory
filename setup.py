@@ -7,6 +7,6 @@ setup(
     version='0.1dev',
     description='This is https://github.com/mozilla/mrfantastic',
     author='A Cons Apart LLC',
-    author_email='',
+    author_email='jherman@aconsapart.com',
     url='https://github.com/mozilla/mrfantastic'
 )
