@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # Search
     'bungiesearch',
     'rest_framework',
 

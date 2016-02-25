@@ -17,7 +17,7 @@ rabbitmq:
     - RABBITMQ_DEFAULT_USER=guest
     - RABBITMQ_DEFAULT_PASSWORD=guest
 db:
-  image: postgres:9.5
+  image: postgres:9.4
 web:
   build: .
   ports:
