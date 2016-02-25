@@ -11,3 +11,7 @@ MANIFEST
 *.py#
 
 *.py
+
+*.sh~
+
+/#docker-compose.yml#

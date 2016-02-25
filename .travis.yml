@@ -1,11 +1,11 @@
 sudo: false
 language: python
 python:
-  - "3.5"
+  - "3.4"
 services:
     - postgresql
 addons:
-  postgresql: "9.3"
+  postgresql: "9.4"
 before_script:
     - psql -c 'create database simplex_db;' -U postgres
 install:

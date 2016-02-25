@@ -1,7 +1,7 @@
 mrfantastic
 ==========
 
-[![Build Status](https://img.shields.io/travis/mozilla/mrfantastic/master.svg)](https://travis-ci.org/mozilla/mrfantastic)
+[![Build Status](https://travis-ci.com/aconsapart/mrfantastic.svg?token=6fZf7q7vCoCMzKpoEJyz&branch=master)](https://travis-ci.com/aconsapart/mrfantastic)
 
 [![Coverage status](https://img.shields.io/coveralls/mozilla/mrfantastic/master.svg)](https://coveralls.io/r/mozilla/mrfantastic)
 

@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import dj_database_url
+
 from decouple import Csv, config
 
-import raven
+from kombu import Exchange, Queue
+#  Celery
+
+import raven  # NOQA
+
+# Exception tracking
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,7 +38,7 @@ DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 AUTHENTICATION_BACKENDS = (
-    
+
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
@@ -55,25 +61,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    #Raven logging
+
+    # Raven logging
     'raven.contrib.django.raven_compat',
     # The Django sites framework is required
     'django.contrib.sites',
-    #Social authentication
+    # Social authentication
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # Search
     'bungiesearch',
+    'rest_framework',
+
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'PAGINATE_BY': 10
+}
 
 BUNGIESEARCH = {
-    'URLS': ['elasticsearch'], # No leading http:// or the elasticsearch client will complain.
-    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'}, # Must be a module path.
+    'URLS': ['elasticsearch'],  # No leading http:// or the elasticsearch client will complain.
+    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'},  # Must be a module path.
     'SIGNALS': {'BUFFER_SIZE': 1},
     'TIMEOUT': 5
 }
 SITE_ID = 1
+
 RAVEN_CONFIG = {
     'dsn': config('DSN')
 }
@@ -106,6 +120,68 @@ DATABASES = {
         cast=dj_database_url.parse
     )
 }
+# Redis
+
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_HOST = os.environ.get('REDIS_PORT_6379_TCP_ADDR', '127.0.0.1')
+
+RABBIT_HOSTNAME = os.environ.get('RABBIT_PORT_5672_TCP', 'rmq:5672')
+
+if RABBIT_HOSTNAME.startswith('tcp://'):
+    RABBIT_HOSTNAME = RABBIT_HOSTNAME.split('//')[1]
+
+BROKER_URL = os.environ.get('BROKER_URL',
+                            '')
+if not BROKER_URL:
+    BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
+        user=os.environ.get('RABBIT_ENV_USER', 'guest'),
+        password=os.environ.get('RABBIT_ENV_RABBITMQ_PASS', 'guest'),
+        hostname=RABBIT_HOSTNAME,
+        vhost=os.environ.get('RABBIT_ENV_VHOST', ''))
+
+# We don't want to have dead connections stored on rabbitmq,
+# so we have to negotiate using heartbeats
+
+BROKER_HEARTBEAT = '?heartbeat=30'
+if not BROKER_URL.endswith(BROKER_HEARTBEAT):
+    BROKER_URL += BROKER_HEARTBEAT
+
+BROKER_POOL_LIMIT = 1
+BROKER_CONNECTION_TIMEOUT = 10
+
+# Celery configuration
+
+# configure queues, currently we have only one
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+# Sensible settings for celery
+CELERY_ALWAYS_EAGER = False
+CELERY_ACKS_LATE = True
+CELERY_TASK_PUBLISH_RETRY = True
+CELERY_DISABLE_RATE_LIMITS = False
+
+# By default we will ignore result
+# If you want to see results and try out tasks interactively, change it to False
+# Or change this setting on tasks level
+CELERY_IGNORE_RESULT = False
+CELERY_SEND_TASK_ERROR_EMAILS = False
+CELERY_TASK_RESULT_EXPIRES = 600
+
+# Set redis as celery result backend
+CELERY_RESULT_BACKEND = 'redis://%s:%d/%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB)
+CELERY_REDIS_MAX_CONNECTIONS = 1
+
+# Don't use pickle as serializer, json is much safer
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_PREFETCH_MULTIPLIER = 1
+CELERYD_MAX_TASKS_PER_CHILD = 1000
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -168,7 +244,7 @@ TEMPLATE_DIRS = (
     # project and tweak it according to your needs
     # os.path.join(PROJECT_ROOT, 'templates', 'uniform', 'allauth'),
     # example project specific templates /mrfantastic/templates/allauth
-    os.path.join(ROOT ,'mrfantastic', 'templates', 'allauth'),
+    os.path.join(ROOT, 'mrfantastic', 'templates', 'allauth'),
 )
 
 # Django-CSP
