@@ -108,4 +108,5 @@ elasticsearch==2.1.0 \
     --hash=sha256:a8074e1d1eefa8359bf3f86a9fc0b86ce12eb51c14f9fa32ec6b2bf67d13239d
 elasticsearch_dsl==0.0.11 \
     --hash=sha256:59a76c4142478a1952bba6f9a9ca4fc7b029afb619e8ffcf0d135ce37ea692da
-	    
+kombu==3.0.33 \
+   --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
