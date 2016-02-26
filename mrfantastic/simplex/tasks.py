@@ -53,6 +53,14 @@ def _fib(n):
     else:
         return _fib(n - 1) + _fib(n - 2)
 
+
+@app.task
+@update_job
+def generate_tags(modelFile):
+    """Run classifiers so that the semantic information
+       of the model will be filled in to the tags field.
+    """
+
 # mapping from names to tasks
 
 TASK_MAPPING = {

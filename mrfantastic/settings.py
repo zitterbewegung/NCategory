@@ -17,7 +17,7 @@ from decouple import Csv, config
 from kombu import Exchange, Queue
 #  Celery
 
-import raven  # NOQA
+import raven  # noqa
 
 # Exception tracking
 
