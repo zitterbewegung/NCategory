@@ -17,7 +17,7 @@ from decouple import Csv, config
 from kombu import Exchange, Queue
 #  Celery
 
-import raven  # noqa
+import raven 
 
 # Exception tracking
 
@@ -89,7 +89,10 @@ BUNGIESEARCH = {
 SITE_ID = 1
 
 RAVEN_CONFIG = {
-    'dsn': config('DSN')
+    'dsn': config('DSN'),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(ROOT),
 }
 for app in config('EXTRA_APPS', default='', cast=Csv()):
     INSTALLED_APPS.append(app)

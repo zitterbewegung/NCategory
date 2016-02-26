@@ -112,8 +112,6 @@ kombu==3.0.33 \
    --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
 celery-bungiesearch==1.2.3 \
     --hash=sha256:aa6a7121f725ef82e75def7a670edd8b978359d9ea9b82f6a211a0c977aa2fc2
-kombu==3.0.33 \
-    --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
 Markdown==2.6.5 \
     --hash=sha256:8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560
 django_filter==0.12.0 \
