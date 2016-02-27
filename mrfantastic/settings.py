@@ -92,7 +92,7 @@ RAVEN_CONFIG = {
     'dsn': config('DSN'),
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    'release': raven.fetch_git_sha(ROOT),
+    #'release': raven.fetch_git_sha(ROOT),
 }
 for app in config('EXTRA_APPS', default='', cast=Csv()):
     INSTALLED_APPS.append(app)

@@ -8,6 +8,7 @@ from bungiesearch.managers import BungiesearchManager
 
 from django.utils import timezone
 
+from django.contrib.postgres.fields import ArrayField
 
 class Comment(models.Model):
     body = models.TextField()
@@ -37,7 +38,9 @@ class Address(models.Model):
 class Tag(models.Model):
     category = models.TextField()
     confidence = models.FloatField()
-
+    def __str__(self):
+        return self.category
+        
 
 class Print(models.Model):
     title = models.TextField()
@@ -47,7 +50,7 @@ class Print(models.Model):
     thumbnail_file = models.TextField()
     print_file = models.TextField()
     price = models.DecimalField(max_digits=19, decimal_places=4)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
     objects = BungiesearchManager()
@@ -58,7 +61,18 @@ class Print(models.Model):
             self.created_at = timezone.now()
         self.modified_at = timezone.now()
         return super(Print, self).save(*args, **kwargs)
-
+        def __str__(self):
+            return '%s %s %s %s %s %s %s %s %s %s' % (self.title,
+                                                      self.description,
+                                                      self.file_path,
+                                                      self.image_file,
+                                                      self.thumbnail_file,
+                                                      self.print_file,
+                                                      self.price,
+                                                      self.tags,
+                                                      self.created_at,
+                                                      self.modified_at)
+                                                      
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
