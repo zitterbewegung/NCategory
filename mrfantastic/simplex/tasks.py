@@ -60,7 +60,8 @@ def generate_tags(modelFile):
     """Run classifiers so that the semantic information
        of the model will be filled in to the tags field.
     """
-
+    
+        
 # mapping from names to tasks
 
 TASK_MAPPING = {

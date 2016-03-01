@@ -17,13 +17,13 @@ from decouple import Csv, config
 from kombu import Exchange, Queue
 #  Celery
 
-import raven 
+import raven  # noqa
 
 # Exception tracking
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(os.path.join(BASE_DIR, '..'))
 
 # Quick-start development settings - unsuitable for production
@@ -45,6 +45,7 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -73,16 +74,38 @@ INSTALLED_APPS = [
     # Search
     'bungiesearch',
     'rest_framework',
+    # Webpack Loader
+    'webpack_loader',
 
 ]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'assets/bundle/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+    # We do this so that django's collectstatic copies or
+    # our bundles to the STATIC_ROOT or syncs them to
+    # whatever storage we use.
+)
+
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
     'PAGINATE_BY': 10
 }
 
 BUNGIESEARCH = {
-    'URLS': ['elasticsearch'],  # No leading http:// or the elasticsearch client will complain.
-    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'},  # Must be a module path.
+    'URLS': ['elasticsearch'],  # No leading http://
+                                # or the elasticsearch client will complain.
+    'INDICES': {'main_index':'mrfantastic.simplex.modelindex'}, # Must be a module path.
     'SIGNALS': {'BUFFER_SIZE': 1},
     'TIMEOUT': 5
 }
@@ -201,11 +224,9 @@ USE_TZ = config('USE_TZ', default=True, cast=bool)
 
 STATIC_ROOT = config('STATIC_ROOT', default=os.path.join(BASE_DIR, 'static'))
 STATIC_URL = config('STATIC_URL', '/static/')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = config('MEDIA_URL', '/media/')
-
 
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
 

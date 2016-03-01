@@ -5,6 +5,8 @@ from rest_framework import mixins, viewsets
 
 from .models import Job
 from .serializers import JobSerializer
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 
 
 class JobViewSet(mixins.CreateModelMixin,
@@ -16,3 +18,8 @@ class JobViewSet(mixins.CreateModelMixin,
     """
     queryset = Job.objects.all()
     serializer_class = JobSerializer
+
+def index(request):
+    """
+    """
+    
