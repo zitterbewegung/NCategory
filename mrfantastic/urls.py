@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'search/', base_views.search, name='search'), 
+    url(r'search/', base_views.search, name='search'),
     # contribute.json url
     url(r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
         {'document_root': settings.ROOT}),

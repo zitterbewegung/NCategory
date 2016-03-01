@@ -8,7 +8,6 @@ from bungiesearch.managers import BungiesearchManager
 
 from django.utils import timezone
 
-from django.contrib.postgres.fields import ArrayField
 
 class Comment(models.Model):
     body = models.TextField()
@@ -38,9 +37,10 @@ class Address(models.Model):
 class Tag(models.Model):
     category = models.TextField()
     confidence = models.FloatField()
+
     def __str__(self):
         return self.category
-        
+
 
 class Print(models.Model):
     title = models.TextField()
@@ -61,6 +61,7 @@ class Print(models.Model):
             self.created_at = timezone.now()
         self.modified_at = timezone.now()
         return super(Print, self).save(*args, **kwargs)
+
         def __str__(self):
             return '%s %s %s %s %s %s %s %s %s %s' % (self.title,
                                                       self.description,
@@ -72,7 +73,7 @@ class Print(models.Model):
                                                       self.tags,
                                                       self.created_at,
                                                       self.modified_at)
-                                                      
+
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

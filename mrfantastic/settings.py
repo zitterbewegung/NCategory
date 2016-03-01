@@ -23,7 +23,7 @@ import raven  # noqa
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(os.path.join(BASE_DIR, '..'))
 
 # Quick-start development settings - unsuitable for production
@@ -82,7 +82,7 @@ INSTALLED_APPS = [
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'assets/bundle/', # must end with slash
+        'BUNDLE_DIR_NAME': 'assets/bundle/',  # must end with slash
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
@@ -105,7 +105,8 @@ REST_FRAMEWORK = {
 BUNGIESEARCH = {
     'URLS': ['elasticsearch'],  # No leading http://
                                 # or the elasticsearch client will complain.
-    'INDICES': {'main_index':'mrfantastic.simplex.modelindex'}, # Must be a module path.
+    'INDICES': {'main_index': 'mrfantastic.simplex.modelindex'},
+    # Must be a module path.
     'SIGNALS': {'BUFFER_SIZE': 1},
     'TIMEOUT': 5
 }
@@ -115,7 +116,7 @@ RAVEN_CONFIG = {
     'dsn': config('DSN'),
     # If you are using git, you can also automatically configure the
     # release based on the git info.
-    #'release': raven.fetch_git_sha(ROOT),
+    # 'release': raven.fetch_git_sha(ROOT),
 }
 for app in config('EXTRA_APPS', default='', cast=Csv()):
     INSTALLED_APPS.append(app)
