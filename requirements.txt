@@ -108,10 +108,10 @@ elasticsearch==2.1.0 \
     --hash=sha256:a8074e1d1eefa8359bf3f86a9fc0b86ce12eb51c14f9fa32ec6b2bf67d13239d
 elasticsearch_dsl==0.0.11 \
     --hash=sha256:59a76c4142478a1952bba6f9a9ca4fc7b029afb619e8ffcf0d135ce37ea692da
+kombu==3.0.33 \
+   --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
 celery-bungiesearch==1.2.3 \
     --hash=sha256:aa6a7121f725ef82e75def7a670edd8b978359d9ea9b82f6a211a0c977aa2fc2
-kombu==3.0.33 \
-    --hash=sha256:6741a5d7e8b8f53151aabd47fd3df1195aed540b169b2d7684b904ff112b483c
 Markdown==2.6.5 \
     --hash=sha256:8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560
 django_filter==0.12.0 \
@@ -120,3 +120,7 @@ djangorestframework==3.3.2 \
     --hash=sha256:5634b1ff56581bf0fe4075e86227fc9693c1ca031c7213c9ae942c445c24817b
 redis==2.10.5 \
     --hash=sha256:97156b37d7cda4e7d8658be1148c983984e1a975090ba458cc7e244025191dbd
+django_pipeline==1.6.6 \
+    --hash=sha256:28519d58b0e77089098c4db0d0821de775ab92e2acd815f19750d164c06792e2
+django-pipeline-browserify==0.2.0 \
+    --hash=sha256:af35789f08bb24a46a3b9a7289d6d6687b0c37df7336ff2edc17c7a6c38f2e64
