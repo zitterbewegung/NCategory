@@ -1,7 +1,7 @@
 from functools import wraps
 
 from .celeryconf import app
-from .models import Jo
+from .models import Job
 
 import argparse
 import base64
