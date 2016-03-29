@@ -104,7 +104,7 @@
 	var THREE = __webpack_require__(949);
 	var Modal = __webpack_require__(950);
 
-	var devhost = "http://192.168.99.100:9200/simplex";
+	var devhost = "http://192.168.99.100:9200/main_index";
 	var host = "https://d78cfb11f565e845000.qb0x.com/movies";
 	var sk = new _searchkit.SearchkitManager(devhost, {
 		multipleSearchers: false

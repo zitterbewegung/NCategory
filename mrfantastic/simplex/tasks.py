@@ -3,7 +3,6 @@ from functools import wraps
 from .celeryconf import app
 from .models import Job
 
-import argparse
 import base64
 import httplib2
 

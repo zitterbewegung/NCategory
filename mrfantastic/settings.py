@@ -275,10 +275,12 @@ TEMPLATE_DIRS = (
 # Django-CSP
 CSP_DEFAULT_SRC = (
     "'self'",
+    "*",
 )
 CSP_FONT_SRC = (
     "'self'",
     'http://*.mozilla.net',
+    'http://192.168.99.100*',
     'https://*.mozilla.net',
     'http://*.mozilla.org',
     'https://*.mozilla.org',

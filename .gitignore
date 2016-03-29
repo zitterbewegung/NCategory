@@ -17,3 +17,5 @@ MANIFEST
 node_modules/
 
 static/
+
+data/ 

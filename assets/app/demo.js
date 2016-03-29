@@ -17,7 +17,7 @@ var ReactTHREE = require('react-three');
 var THREE = require('three');
 var Modal = require('react-modal');
 
-const devhost = "http://192.168.99.100:9200/simplex"
+const devhost = "http://192.168.99.100:9200/main_index"
 const host = "https://d78cfb11f565e845000.qb0x.com/movies"
 const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
