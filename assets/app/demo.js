@@ -17,7 +17,7 @@ var ReactTHREE = require('react-three');
 var THREE = require('three');
 var Modal = require('react-modal');
 
-const devhost = "http://192.168.99.100:9200/simplex"
+const devhost = "http://192.168.99.100:9200/main_index"
 const host = "https://d78cfb11f565e845000.qb0x.com/movies"
 const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
@@ -30,9 +30,10 @@ class ModelHits extends Hits {
 	        <div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
 		<a href={url} target="_blank">
 		
-	        <img className={this.bemBlocks.item("thumbnail")} src={result._source.thumbnail} width="180" height="270"/>
-		<div className={this.bemBlocks.item("title")}>{result._source.name}</div>
+	        <img className={this.bemBlocks.item("thumbnail")} src={result._source.image_file} width="180" height="270"/>
+		<div className={this.bemBlocks.item("title")}>{result._source.title}</div>
 		<div className={this.bemBlocks.item("description")}>{result._source.description}</div>
+		<div className={this.bemBlocks.item("meta_data")}>{result._source.meta_data}</div>
 		<div className={this.bemBlocks.item("price")}>{result._source.price}</div>
 		<ModalViewer></ModalViewer>		
 

@@ -16,7 +16,7 @@ import {
 
 require("./index.scss");
 
-const host = "https://d78cfb11f565e845000.qb0x.com/movies"
+const host = "http://192.168.99.100:9200"
 const sk = new SearchkitManager(host, {
   multipleSearchers:false
 })
@@ -36,13 +36,12 @@ class MovieHits extends Hits {
 }
 class ModelHits extends Hits {
     renderResult(result) {
-	let urlobj = "http://www.imdb.com/title/" + result._source.imdbId
+	let urlobj = "http://www.imdb.com/title/" + result._source.image_file
 	return (
 	    <div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
 		<a href={url} target="_blank">
-		     <a-model src="https://aframe.io/aframe/examples/_models/tree1/tree1.dae"></a-model>
 		    
-		    <div className={this.bemBlocks.item("title")}>{result._source.title}</div>
+		     <div className={this.bemBlocks.item("title")}>{result._source.title} {result._source.meta_data}</div>
 		</a>
 	    </div>
 	)

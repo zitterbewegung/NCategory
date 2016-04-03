@@ -4,6 +4,8 @@ elasticsearch:
   ports:
     - "9200:9200"
     - "9300:9300"
+  volumes:
+    - ./config:/usr/share/elasticsearch/config
 # redis container
 redis:
   image: redis:3.0.7
@@ -24,6 +26,7 @@ web:
     - "8000:8000"
   volumes:
     - .:/app
+    - ~/datasets/:/app/data
   links:
     - db
     - elasticsearch

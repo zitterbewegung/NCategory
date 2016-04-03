@@ -104,7 +104,7 @@
 	var THREE = __webpack_require__(949);
 	var Modal = __webpack_require__(950);
 
-	var devhost = "http://192.168.99.100:9200/simplex";
+	var devhost = "http://192.168.99.100:9200/main_index";
 	var host = "https://d78cfb11f565e845000.qb0x.com/movies";
 	var sk = new _searchkit.SearchkitManager(devhost, {
 		multipleSearchers: false
@@ -129,16 +129,21 @@
 					_react2.default.createElement(
 						'a',
 						{ href: url, target: '_blank' },
-						_react2.default.createElement('img', { className: this.bemBlocks.item("thumbnail"), src: result._source.thumbnail, width: '180', height: '270' }),
+						_react2.default.createElement('img', { className: this.bemBlocks.item("thumbnail"), src: result._source.image_file, width: '180', height: '270' }),
 						_react2.default.createElement(
 							'div',
 							{ className: this.bemBlocks.item("title") },
-							result._source.name
+							result._source.title
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: this.bemBlocks.item("description") },
 							result._source.description
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: this.bemBlocks.item("meta_data") },
+							result._source.meta_data
 						),
 						_react2.default.createElement(
 							'div',

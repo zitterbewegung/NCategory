@@ -91,6 +91,7 @@ WEBPACK_LOADER = {
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'data'),
     # We do this so that django's collectstatic copies or
     # our bundles to the STATIC_ROOT or syncs them to
     # whatever storage we use.
@@ -275,10 +276,12 @@ TEMPLATE_DIRS = (
 # Django-CSP
 CSP_DEFAULT_SRC = (
     "'self'",
+    "*",
 )
 CSP_FONT_SRC = (
     "'self'",
     'http://*.mozilla.net',
+    'http://192.168.99.100*',
     'https://*.mozilla.net',
     'http://*.mozilla.org',
     'https://*.mozilla.org',
