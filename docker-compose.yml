@@ -26,7 +26,7 @@ web:
     - "8000:8000"
   volumes:
     - .:/app
-    - ../datasets:/app/data
+    - ~/datasets/:/app/data
   links:
     - db
     - elasticsearch

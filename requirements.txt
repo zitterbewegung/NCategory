@@ -128,8 +128,6 @@ httplib2==0.9.2 \
     --hash=sha256:c3aba1c9539711551f4d83e857b316b5134a1c4ddce98a875b7027be7dd6d988
 google_api_python_client==1.5.0  \
     --hash=sha256:7b60666c321a3bd0b4b9e383cf44c0f6754b70844344b770ef4a474d775e1cfc
-httplib2==0.9.2 \
-   --hash=sha256:c3aba1c9539711551f4d83e857b316b5134a1c4ddce98a875b7027be7dd6d988
 oauth2client==2.0.1 \
    --hash=sha256:351def3df312364f0c5e38a682c8d8a70a36d884cf40bd0084a67d7b8f7ed7ac
 pyasn1==0.1.9 \
@@ -139,6 +137,6 @@ pyasn1_modules==0.0.8 \
 rsa==3.4.2 \
   --hash=sha256:43f682fea81c452c98d09fc316aae12de6d30c4b5c84226642cf8f8fd1c93abd
 simplejson==3.8.2 \
-  --hash=sha256:e3b2fed6fedf3fdce70d10c61dee8779b8bf7e67b5625efee4bff8243b180487
+  --hash=sha256:d58439c548433adcda98e695be53e526ba940a4b9c44fb9a05d92cd495cdd47f
 uritemplate==0.6 \
   --hash=sha256:a30e230aeb7ebedbcb5da9999a17fa8a30e512e6d5b06f73d47c6e03c8e357fd

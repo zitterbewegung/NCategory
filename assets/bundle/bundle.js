@@ -129,16 +129,21 @@
 					_react2.default.createElement(
 						'a',
 						{ href: url, target: '_blank' },
-						_react2.default.createElement('img', { className: this.bemBlocks.item("thumbnail"), src: result._source.thumbnail, width: '180', height: '270' }),
+						_react2.default.createElement('img', { className: this.bemBlocks.item("thumbnail"), src: result._source.image_file, width: '180', height: '270' }),
 						_react2.default.createElement(
 							'div',
 							{ className: this.bemBlocks.item("title") },
-							result._source.name
+							result._source.title
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: this.bemBlocks.item("description") },
 							result._source.description
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: this.bemBlocks.item("meta_data") },
+							result._source.meta_data
 						),
 						_react2.default.createElement(
 							'div',
