@@ -126,7 +126,7 @@ class MovieHits extends Hits {
 		)
 	}
 }
-class DemoScene extends React.Component {
+export class DemoScene extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
