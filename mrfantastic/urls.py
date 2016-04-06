@@ -5,6 +5,7 @@ from rest_framework import routers
 
 from mrfantastic.base import views as base_views
 from mrfantastic.simplex import views as simplex_views
+from django.views.generic import TemplateView
 
 router = routers.DefaultRouter()
 # register job endpoint in the router
@@ -14,9 +15,11 @@ urlpatterns = [
     url(r'^$', base_views.home, name='home'),
     url(r'^router/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'search/', base_views.search, name='search'),
+    url(r'^search/$',
+        TemplateView.as_view(template_name='mrfantastic/search.html')),
     # contribute.json url
     url(r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
         {'document_root': settings.ROOT}),

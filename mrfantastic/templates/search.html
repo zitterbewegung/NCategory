@@ -3,11 +3,19 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Example</title>
+    <title>NCategory</title>
+    <meta http-equiv="Content-Security-Policy"
+	        content="connect-src *;
+">
+ 
   </head>
 
   <body>
+    {% csrf_token %}
+
     <div id="react-app"></div>
+    <div class="scene-container"></div>
+     
     {% render_bundle 'main' %}
   </body>
 </html>

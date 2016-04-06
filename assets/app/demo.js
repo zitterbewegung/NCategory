@@ -1,17 +1,22 @@
-import 'aframe-core'
+import 'aframe'
 import 'babel-polyfill'
 import {Animation, Entity, Scene} from 'aframe-react'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import sample from 'lodash.sample'
 import {cdn} from '../utils'
 import {Camera, Cursor, Light, Sky, CurvedImage, VideoSphere} from '../components/primitives'
 import {Sphere, Cube, Cylinder, Plane} from '../components/geometries'
 import {
-    SearchkitManager,
-    SearchkitProvider,
-    SearchBox,
-    Hits}from "searchkit";
+    SearchkitManager, SearchkitProvider,
+    SearchBox, RefinementListFilter, MenuFilter,
+    Hits, HitsStats, NoHits, Pagination, SortingSelector,
+    SelectedFilters, ResetFilters, ItemHistogramList,
+    Layout, LayoutBody, LayoutResults, TopBar,
+    SideBar, ActionBar, ActionBarRow
+} from "searchkit";
+
+import { browserHistory, Router, Route, Link } from 'react-router'
 require("./index.scss");
 var ReactTHREE = require('react-three');
 var THREE = require('three');
@@ -23,21 +28,21 @@ const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
 })
 
-class ModelHits extends Hits {
-    renderResult(result) {
+
+
+class ModelHits extends React.Component {
+    render() {
+     const result = this.props.result;
 	let url = "https://s3.amazonaws.com/ncategorizer-assets/3d-models/" + result._location
 	return (
-	        <div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
-		<a href={url} target="_blank">
-		
-	        <img className={this.bemBlocks.item("thumbnail")} src={result._source.image_file} width="180" height="270"/>
-		<div className={this.bemBlocks.item("title")}>{result._source.title}</div>
-		<div className={this.bemBlocks.item("description")}>{result._source.description}</div>
-		<div className={this.bemBlocks.item("meta_data")}>{result._source.meta_data}</div>
-		<div className={this.bemBlocks.item("price")}>{result._source.price}</div>
-		<ModalViewer></ModalViewer>		
-
-		</a>
+	        <div className={bemBlocks.item().mix(bemBlocks.container("item"))} key={result._id}>
+		  <a href={url} target="_blank">Download obj file.</a>
+	          <img className={bemBlocks.item("thumbnail")} src={result._source.image_file} width="180" height="270"/>
+		  <div className={bemBlocks.item("title")}>{result._source.title}</div>
+		  <div className={bemBlocks.item("description")}>{result._source.description}</div>
+		  <div className={bemBlocks.item("meta_data")}>{result._source.meta_data}</div>
+		  <div className={bemBlocks.item("price")}>{result._source.price}</div>
+		  <ModalViewer></ModalViewer>		
 		</div>
 	)
     }
@@ -111,49 +116,104 @@ var ModalViewer = React.createClass({
     }
 });
 
-class MovieHits extends Hits {
-	renderResult(result) {
-		let url = "http://www.imdb.com/title/" + result._source.imdbId
-	         return (
-		
-			<div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
-				<a href={url} target="_blank">
-					<img className={this.bemBlocks.item("poster")} src={result._source.poster} width="180" height="270"/>
-					<div className={this.bemBlocks.item("title")}>{result._source.title}</div>
-			        </a>
-	                    <ModalViewer></ModalViewer>		
-   		        </div>
-		)
-	}
-}
 class DemoScene extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
 
-  render () {
 
-      return (
-	  <div>
-	      <div className="search-site">
-			<SearchkitProvider searchkit={sk}>
-				<div>
-					<div className="search-site__query">
-						<SearchBox autofocus={true} searchOnChange={true}/>
-					</div>
+    render() {
 
-					<div className="search-site__results">
-						<ModelHits hitsPerPage={10}/>
-					</div>
-				</div>
-			</SearchkitProvider>
-	      </div>
-       </div>
-    )
-  }
+	return (<div>
+
+		<SearchkitProvider searchkit={sk}>
+		  <div className="search">
+		   <div className="search__query">
+		    <SearchBox searchOnChange={true} prefixQueryFields={["actors^1","type^2","languages","title^10"]} />
+		   </div>
+		  <div className="search__results">
+		   <Hits hitsPerPage={6} itemComponent={ModelHits}/>
+		  </div>
+		 </div>
+		</SearchkitProvider>
+
+		</div>);
+    }
+}
+class App extends React.Component {
+    render() {
+	const depth = this.props.routes.length
+
+	return (
+	    <div>
+	    <aside>
+	    <ul>
+	    <li><Link to={Products.path}>Products</Link></li>
+	    <li><Link to={TextSearch.path}>Orders</Link></li>
+	    </ul>
+	    </aside>
+	    <main>
+	    <ul className="breadcrumbs-list">
+	    {this.props.routes.map((item, index) =>
+		<li key={index}>
+		<Link
+		onlyActiveOnIndex={true}
+		activeClassName="breadcrumb-active"
+		to={item.path || ''}>
+		{item.component.title}
+		</Link>
+		{(index + 1) < depth && '\u2192'}
+		</li>
+	    )}
+	    </ul>
+	    {this.props.children}
+	    </main>
+	    </div>
+	)
+    }
 }
 
+App.title = 'Home'
+App.path = '/search/home'
 
-ReactDOM.render(<DemoScene/>, document.querySelector('.scene-container'))
+
+
+class Products extends React.Component {
+    render() {
+	return (
+	    <div className="Page">
+	    <h1>File Search</h1>
+	    </div>
+	)
+    }
+}
+
+Products.title = 'File Search'
+Products.path = '/search/upload'
+
+class TextSearch extends React.Component {
+    render() {
+	return (
+	    <div className="Page">
+	    <h1>Search</h1>
+	    <DemoScene/>
+	    </div>
+	)
+    }
+}
+
+TextSearch.title = 'Search'
+TextSearch.path = '/search'
+
+render((
+    <Router history={browserHistory}>
+     <Route path={App.path} component={App}>
+      <Route path={Products.path} component={Products} />
+      <Route path={TextSearch.path} component={TextSearch} />
+     </Route>
+    </Router>
+), document.getElementById('react-app'))
+
+//ReactDOM.render(<DemoScene/>, document.querySelector('.scene-container'))
 
