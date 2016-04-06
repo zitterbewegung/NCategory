@@ -116,26 +116,7 @@ var ModalViewer = React.createClass({
     }
 });
 
-<<<<<<< HEAD
-class DemoScene extends React.Component {
-=======
-class MovieHits extends Hits {
-	renderResult(result) {
-		let url = "http://www.imdb.com/title/" + result._source.imdbId
-	         return (
-		
-			<div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
-				<a href={url} target="_blank">
-					<img className={this.bemBlocks.item("poster")} src={result._source.poster} width="180" height="270"/>
-					<div className={this.bemBlocks.item("title")}>{result._source.title}</div>
-			        </a>
-	                    <ModalViewer></ModalViewer>		
-   		        </div>
-		)
-	}
-}
 export class DemoScene extends React.Component {
->>>>>>> parent of fa62bb0... Revert "nonworking react setup"
   constructor(props) {
     super(props)
     this.state = {}
