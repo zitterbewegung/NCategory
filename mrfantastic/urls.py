@@ -12,14 +12,18 @@ router = routers.DefaultRouter()
 router.register(r'jobs', simplex_views.JobViewSet)
 
 urlpatterns = [
-    url(r'^$', base_views.home, name='home'),
+    url(r'^home/', base_views.home, name='home'),
     url(r'^router/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
     url(r'^accounts/', include('allauth.urls')),
+<<<<<<< HEAD
     url(r'^search/$',
         TemplateView.as_view(template_name='mrfantastic/search.html')),
+=======
+    url(r'^$', TemplateView.as_view(template_name='search.html'),
+>>>>>>> parent of fa62bb0... Revert "nonworking react setup"
     # contribute.json url
     url(r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
         {'document_root': settings.ROOT}),
