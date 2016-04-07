@@ -277,6 +277,7 @@ TEMPLATE_DIRS = (
 CSP_DEFAULT_SRC = (
     "'self'",
     "*",
+    "'data'",
 )
 CSP_FONT_SRC = (
     "'self'",
@@ -288,6 +289,8 @@ CSP_FONT_SRC = (
 )
 CSP_IMG_SRC = (
     "'self'",
+    "'data'",
+    'http://192.168.99.100*',
     'http://*.mozilla.net',
     'https://*.mozilla.net',
     'http://*.mozilla.org',

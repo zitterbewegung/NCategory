@@ -1,22 +1,28 @@
-import 'aframe'
+import 'aframe-core'
 import 'babel-polyfill'
 import {Animation, Entity, Scene} from 'aframe-react'
 import React from 'react'
-import { render } from 'react-dom'
+import ReactDOM from 'react-dom'
 import sample from 'lodash.sample'
 import {cdn} from '../utils'
 import {Camera, Cursor, Light, Sky, CurvedImage, VideoSphere} from '../components/primitives'
 import {Sphere, Cube, Cylinder, Plane} from '../components/geometries'
 import {
-    SearchkitManager, SearchkitProvider,
-    SearchBox, RefinementListFilter, MenuFilter,
-    Hits, HitsStats, NoHits, Pagination, SortingSelector,
-    SelectedFilters, ResetFilters, ItemHistogramList,
-    Layout, LayoutBody, LayoutResults, TopBar,
-    SideBar, ActionBar, ActionBarRow
+    SearchBox,
+    RefinementListFilter,
+    Hits,
+    HitsStats,
+    HitItemProps,
+    SearchkitComponent,
+    SelectedFilters,
+    MenuFilter,
+    HierarchicalMenuFilter,
+    Pagination,
+    ResetFilters,
+    SearchkitManager,
+    SearchkitProvider,
+    NoHits
 } from "searchkit";
-
-import { browserHistory, Router, Route, Link } from 'react-router'
 require("./index.scss");
 var ReactTHREE = require('react-three');
 var THREE = require('three');
@@ -28,24 +34,23 @@ const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
 })
 
+const ModelHits = (props) => {
 
 
-class ModelHits extends React.Component {
-    render() {
-     const result = this.props.result;
-	let url = "https://s3.amazonaws.com/ncategorizer-assets/3d-models/" + result._location
-	return (
-	        <div className={bemBlocks.item().mix(bemBlocks.container("item"))} key={result._id}>
-		  <a href={url} target="_blank">Download obj file.</a>
-	          <img className={bemBlocks.item("thumbnail")} src={result._source.image_file} width="180" height="270"/>
-		  <div className={bemBlocks.item("title")}>{result._source.title}</div>
-		  <div className={bemBlocks.item("description")}>{result._source.description}</div>
-		  <div className={bemBlocks.item("meta_data")}>{result._source.meta_data}</div>
-		  <div className={bemBlocks.item("price")}>{result._source.price}</div>
-		  <ModalViewer></ModalViewer>		
-		</div>
-	)
-    }
+	let url = "https://s3.amazonaws.com/ncategorizer-assets/3d-models/" + props.result._source.image_file;
+    return(
+      	<div className={props.bemBlocks.item().mix(props.bemBlocks.container("item"))} key={props.result._id}>
+		<a href={url} target="_blank">
+		
+	        <img className={props.bemBlocks.item("thumbnail")} src={props.result._source.image_file} width="180" height="270"/>
+		<div className={props.bemBlocks.item("title")}>{props.result._source.title}</div>
+		<div className={props.bemBlocks.item("description")}>{props.result._source.description}</div>
+		<div className={props.bemBlocks.item("meta_data")}>{props.result._source.meta_data}</div>
+		<div className={props.bemBlocks.item("price")}>{props.result._source.price}</div>
+		
+		</a>
+	    </div>
+    );
 }
 var ModelRenderer = React.createClass({
     render: function() {
@@ -116,104 +121,41 @@ var ModalViewer = React.createClass({
     }
 });
 
-export class DemoScene extends React.Component {
+
+class DemoScene extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
 
+  render () {
 
-    render() {
 
-	return (<div>
 
-		<SearchkitProvider searchkit={sk}>
-		  <div className="search">
-		   <div className="search__query">
-		    <SearchBox searchOnChange={true} prefixQueryFields={["actors^1","type^2","languages","title^10"]} />
-		   </div>
-		  <div className="search__results">
-		   <Hits hitsPerPage={6} itemComponent={ModelHits}/>
-		  </div>
-		 </div>
-		</SearchkitProvider>
+      return (<div>
 
-		</div>);
-    }
-}
-class App extends React.Component {
-    render() {
-	const depth = this.props.routes.length
+	      <SearchkitProvider searchkit={sk}>
+	      <div className="search">
+	      <div className="search__query">
+	      <SearchBox searchOnChange={true}  />
+	      </div>
+	      <div className="search__results">
+	      <Hits hitsPerPage={6} mod="sk-hits-grid" itemComponent={ModelHits}/>
+	      <NoHits translations={{
+		  "NoHits.NoResultsFound":"No movies found were found for {query}",
+		  "NoHits.DidYouMean":"Search for {suggestion}",
+		  "NoHits.SearchWithoutFilters":"Search for {query} without filters"
+	      }} suggestionsField="title"/>
+	      <Pagination showNumbers={true}/>
+	      </div>
+	      </div>
+	      </SearchkitProvider>
 
-	return (
-	    <div>
-	    <aside>
-	    <ul>
-	    <li><Link to={Products.path}>Products</Link></li>
-	    <li><Link to={TextSearch.path}>Orders</Link></li>
-	    </ul>
-	    </aside>
-	    <main>
-	    <ul className="breadcrumbs-list">
-	    {this.props.routes.map((item, index) =>
-		<li key={index}>
-		<Link
-		onlyActiveOnIndex={true}
-		activeClassName="breadcrumb-active"
-		to={item.path || ''}>
-		{item.component.title}
-		</Link>
-		{(index + 1) < depth && '\u2192'}
-		</li>
-	    )}
-	    </ul>
-	    {this.props.children}
-	    </main>
-	    </div>
-	)
-    }
+	      </div>);
+         }
+   
 }
 
-App.title = 'Home'
-App.path = '/search/home'
 
-
-
-class Products extends React.Component {
-    render() {
-	return (
-	    <div className="Page">
-	    <h1>File Search</h1>
-	    </div>
-	)
-    }
-}
-
-Products.title = 'File Search'
-Products.path = '/search/upload'
-
-class TextSearch extends React.Component {
-    render() {
-	return (
-	    <div className="Page">
-	    <h1>Search</h1>
-	    <DemoScene/>
-	    </div>
-	)
-    }
-}
-
-TextSearch.title = 'Search'
-TextSearch.path = '/search'
-
-render((
-    <Router history={browserHistory}>
-     <Route path={App.path} component={App}>
-      <Route path={Products.path} component={Products} />
-      <Route path={TextSearch.path} component={TextSearch} />
-     </Route>
-    </Router>
-), document.getElementById('react-app'))
-
-//ReactDOM.render(<DemoScene/>, document.querySelector('.scene-container'))
+ReactDOM.render(<DemoScene/>, document.querySelector('.scene-container'))
 
