@@ -3,7 +3,7 @@ mrfantastic
 
 [![Build Status](https://travis-ci.com/aconsapart/mrfantastic.svg?token=6fZf7q7vCoCMzKpoEJyz&branch=master)](https://travis-ci.com/aconsapart/mrfantastic)
 
-[![Coverage status](https://img.shields.io/coveralls/mozilla/mrfantastic/master.svg)](https://coveralls.io/r/mozilla/mrfantastic)
+[![Coverage status](https://img.shields.io/coveralls/aconsapart/mrfantastic/master.svg)](https://coveralls.io/r/aconsapart/mrfantastic)
 
 Run the tests
 -------------

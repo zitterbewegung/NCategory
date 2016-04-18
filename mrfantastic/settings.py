@@ -76,7 +76,9 @@ INSTALLED_APPS = [
     'rest_framework',
     # Webpack Loader
     'webpack_loader',
-
+    'storages',
+    'analytical',
+    
 ]
 
 WEBPACK_LOADER = {

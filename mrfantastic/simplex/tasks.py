@@ -2,7 +2,7 @@ from functools import wraps
 
 from .celeryconf import app
 from .models import Job
-
+import subprocess, tempfile
 # decorator to avoid code duplication
 
 
@@ -60,11 +60,26 @@ def generate_tags(modelFile):
     """Run classifiers so that the semantic information
        of the model will be filled in to the tags field.
     """
+    args = ['pcl_extract_feature', '-n_radius', '1', '-f_radius', '1', inputFileName, outputFileName]
+
     pass
 
+@app.task
+def convert_ply_pcd(inputFileName, outputFileName):
+    with tempfile.NamedTemporaryFile(suffix='.pcd') as tf:
+        args = ['pcl_obj2pcd', inputFileName, tf.name]
+        p = subprocess.Popen(args)
+        import pdb; pdb.set_trace()
+        tf.flush()
+        convert_args = ['pcl_convert_pcd_ascii_binary', tf.name, outputFileName, '0']
+        p2 = subprocess.Popen(convert_args)
+        import pdb; pdb.set_trace()
+    return p.returncode
 # mapping from names to tasks
 
 TASK_MAPPING = {
     'power': power,
-    'fibonacci': fib
+    'fibonacci': fib,
+    'convert_ply_pcd': convert_ply_pcd,
+    'generate_tags': generate_tags,
 }

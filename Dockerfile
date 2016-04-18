@@ -7,7 +7,7 @@ RUN adduser --uid 1000 --disabled-password --gecos '' --no-create-home webdev
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential python3 python3-dev python3-pip \
-                                               libpq-dev postgresql-client gettext && \
+                                               libpq-dev postgresql-client gettext pcl-tools&& \
     rm -rf /var/lib/apt/lists/*
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
