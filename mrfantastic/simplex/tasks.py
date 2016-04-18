@@ -55,26 +55,35 @@ def _fib(n):
 
 
 @app.task
-@update_job
+
 def generate_tags(modelFile):
     """Run classifiers so that the semantic information
        of the model will be filled in to the tags field.
     """
-    args = ['pcl_extract_feature', '-n_radius', '1', '-f_radius', '1', inputFileName, outputFileName]
 
     pass
+
+@app.task
+def pcd_to_vfh_histogram(inputFileName, outputFileName):
+    """
+    
+    """
+    args = ['pcl_extract_feature', inputFileName, outputFileName, '-feature', 'VFHEstimation', '-n_k', '1', '-f_k', '1']
+    p = subprocess.call(args)
+    
+    
 
 @app.task
 def convert_ply_pcd(inputFileName, outputFileName):
     with tempfile.NamedTemporaryFile(suffix='.pcd') as tf:
         args = ['pcl_obj2pcd', inputFileName, tf.name]
-        p = subprocess.Popen(args)
-        import pdb; pdb.set_trace()
         tf.flush()
+        p = subprocess.call(args)
+        #import pdb; pdb.set_trace()
         convert_args = ['pcl_convert_pcd_ascii_binary', tf.name, outputFileName, '0']
-        p2 = subprocess.Popen(convert_args)
-        import pdb; pdb.set_trace()
-    return p.returncode
+        p2 = subprocess.call(convert_args)
+        tf.flush()
+        #import pdb; pdb.set_trace()
 # mapping from names to tasks
 
 TASK_MAPPING = {
@@ -82,4 +91,5 @@ TASK_MAPPING = {
     'fibonacci': fib,
     'convert_ply_pcd': convert_ply_pcd,
     'generate_tags': generate_tags,
+    'pcd_to_vfh_histogram': pcd_to_vfh_histogram,
 }
