@@ -112,7 +112,6 @@ class Job(models.Model):
         ('power', 'power'),
         ('convert_ply_pcd', 'convert_ply_pcd'),
         ('generate_tags', 'generate_tags'),
-        ('pcd_to_vfh_histogram', 'pcd_to_vfh_histogram'),
     )
 
     # list of statuses that job can have
