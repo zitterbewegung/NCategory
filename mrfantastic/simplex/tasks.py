@@ -3,7 +3,7 @@ from functools import wraps
 from .celeryconf import app
 from .models import Job
 # decorator to avoid code duplication
-import utility
+from .utility import convert_ply_pcd, pcd_to_vfh_histogram
 
 def update_job(fn):
     """Decorator that will update Job with result of the function"""
