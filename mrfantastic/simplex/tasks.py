@@ -38,9 +38,7 @@ def generate_tags(modelFile):
     pass
 
 
-@app.task
-    
-def pcd_to_vfh_histogram(inputFileName, outputFileName):
+def _pcd_to_vfh_histogram(inputFileName, outputFileName):
     """
     
     """
@@ -49,9 +47,8 @@ def pcd_to_vfh_histogram(inputFileName, outputFileName):
     return str(outputFileName)
     
 
-@app.task
-@update_job
-def convert_ply_pcd(inputFileName, outputFileName):
+
+def _convert_ply_pcd(inputFileName, outputFileName):
     with tempfile.NamedTemporaryFile(suffix='.pcd') as tf:
         args = ['pcl_obj2pcd', inputFileName, tf.name]
         tf.flush()
@@ -63,7 +60,5 @@ def convert_ply_pcd(inputFileName, outputFileName):
 # mapping from names to tasks
 
 TASK_MAPPING = {
-    'convert_ply_pcd': convert_ply_pcd,
     'generate_tags': generate_tags,
-    'pcd_to_vfh_histogram': pcd_to_vfh_histogram,
 }

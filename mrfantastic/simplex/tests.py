@@ -2,7 +2,7 @@ from django.test import TestCase  # noqa
 from django.utils import timezone
 from .models import Print, Tag
 import tempfile, subprocess
-from .tasks import convert_ply_pcd, generate_tags, pcd_to_vfh_histogram
+from .tasks import _convert_ply_pcd, generate_tags, _pcd_to_vfh_histogram
 from django.conf import settings
 from .celeryconf import app
 #  Create your tests here.
@@ -83,7 +83,7 @@ DATA ascii
         with tempfile.NamedTemporaryFile(suffix='.obj') as fp:
             fp.write(self.cube_obj.encode('UTF-8'))
             fp.flush()
-            convert_ply_pcd.run(fp.name, '/tmp/cube.pcd')
+            _convert_ply_pcd(fp.name, '/tmp/cube.pcd')
         
             
         with open('/tmp/cube.pcd', mode='r', encoding="UTF-8") as fout, tempfile.TemporaryFile(mode='r+', encoding="UTF-8") as result_file:
@@ -92,7 +92,6 @@ DATA ascii
             result_file.flush()
             result_file.seek(0)
             result_string = result_file.read()
-            import pdb; pdb.set_trace()
             self.assertMultiLineEqual(result_string, processed_string)
 
     def test_vfh_feature(self):
@@ -102,8 +101,7 @@ DATA ascii
             fp.flush()
             test_file.write(self.cube_ascii_pcd)
             test_file.flush()
-            import pdb; pdb.set_trace()
-            pcd_to_vfh_histogram.run(test_file.name, result_file.name)
+            _pcd_to_vfh_histogram(test_file.name, result_file.name)
             fp.seek(0)
             test_file.seek(0)
             processed_string = fp.read()
@@ -111,7 +109,6 @@ DATA ascii
             self.assertMultiLineEqual(result_string, processed_string)
                 
                 
-
 class SimplexMethodtests(TestCase):
 
     def test_db_insert(self):

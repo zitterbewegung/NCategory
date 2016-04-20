@@ -108,11 +108,7 @@ class Job(models.Model):
 
     # currently, available types of job are:
     TYPES = (
-        ('fibonacci', 'fibonacci'),
-        ('power', 'power'),
-        ('convert_ply_pcd', 'convert_ply_pcd'),
         ('generate_tags', 'generate_tags'),
-        ('pcd_to_vfh_histogram', 'pcd_to_vfh_histogram'),
     )
 
     # list of statuses that job can have
@@ -128,7 +124,8 @@ class Job(models.Model):
 
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField(default=timezone.now())
-    argument = models.PositiveIntegerField(null=True)
+    input_argument = models.TextField(null=True)
+    output_argument = models.TextField(null=True)
     result = models.IntegerField(null=True)
 
     def save(self, *args, **kwargs):
@@ -137,7 +134,9 @@ class Job(models.Model):
         if self.status == 'pending':
             from .tasks import TASK_MAPPING
             task = TASK_MAPPING[self.type]
-            task.delay(job_id=self.id, n=self.argument)
+            task.delay(job_id=self.id,
+                       inputFileName=self.input_argument,
+                       outputFileName=self.output_argument)
         ''' On save, update timestamps '''
         if not self.id:
             self.created_at = timezone.now()
