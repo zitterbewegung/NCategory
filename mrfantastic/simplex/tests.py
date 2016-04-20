@@ -2,7 +2,8 @@ from django.test import TestCase  # noqa
 from django.utils import timezone
 from .models import Print, Tag
 import tempfile, subprocess
-from .tasks import _convert_ply_pcd, generate_tags, _pcd_to_vfh_histogram
+from .tasks import generate_tags
+from utility import convert_ply_pcd, pcd_to_vfh_histogram
 from django.conf import settings
 from .celeryconf import app
 #  Create your tests here.
@@ -83,7 +84,7 @@ DATA ascii
         with tempfile.NamedTemporaryFile(suffix='.obj') as fp:
             fp.write(self.cube_obj.encode('UTF-8'))
             fp.flush()
-            _convert_ply_pcd(fp.name, '/tmp/cube.pcd')
+            convert_ply_pcd(fp.name, '/tmp/cube.pcd')
         
             
         with open('/tmp/cube.pcd', mode='r', encoding="UTF-8") as fout, tempfile.TemporaryFile(mode='r+', encoding="UTF-8") as result_file:
@@ -101,7 +102,7 @@ DATA ascii
             fp.flush()
             test_file.write(self.cube_ascii_pcd)
             test_file.flush()
-            _pcd_to_vfh_histogram(test_file.name, result_file.name)
+            pcd_to_vfh_histogram(test_file.name, result_file.name)
             fp.seek(0)
             test_file.seek(0)
             processed_string = fp.read()
