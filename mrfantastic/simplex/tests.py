@@ -3,7 +3,7 @@ from django.utils import timezone
 from .models import Print, Tag
 import tempfile, subprocess
 from .tasks import generate_tags
-from .utility import convert_ply_pcd, pcd_to_vfh_histogram
+from .utility import convert_obj_pcd, pcd_to_vfh_histogram
 from django.conf import settings
 from .celeryconf import app
 #  Create your tests here.

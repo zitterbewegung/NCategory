@@ -33,11 +33,10 @@ class Comment(models.Model):
         self.modified_at = timezone.now()
         return super(Comment, self).save(*args, **kwargs)
 
-
+        
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(unique=True)
-    password = models.TextField()
     last_name = models.TextField()
     first_name = models.TextField()
     address = models.TextField()

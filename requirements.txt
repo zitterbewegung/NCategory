@@ -77,7 +77,7 @@ requests_oauthlib==0.6.0 \
 defusedxml==0.4.1 \
    --hash=sha256:cd551d5a518b745407635bb85116eb813818ecaf182e773c35b36239fc3f2478
 python3-openid==3.0.9 \
-    --hash=sha256:ac84fe199629eb17f5ee8e6fb75b71904264f713266d18f88c1238ff4e4779f7
+    --hash=sha256:fd6006e5277d00e97a7d216ee3b25e29a951d17b7ef07748e757e6599aa1e8fe
 django-allauth==0.24.1 \
     --hash=sha256:229a6a5a63ff55f9eb46d4dae3863ba775735bf60bfc16bf4e2042f214f18e1d
 django-bootstrap-form==3.2 \
@@ -113,7 +113,7 @@ kombu==3.0.33 \
 celery-bungiesearch==1.2.3 \
     --hash=sha256:aa6a7121f725ef82e75def7a670edd8b978359d9ea9b82f6a211a0c977aa2fc2
 Markdown==2.6.5 \
-    --hash=sha256:8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560
+    --hash=sha256:a59fdbcec28f79ad9842ea7f74cde5a02e14a3025836e0bc66c4fc48596ce2ca
 django_filter==0.12.0 \
     --hash=sha256:8b6459e58dbf6f67384707be6724a0a88db6709764bc2eb9de265a52dc441ccb
 djangorestframework==3.3.2 \
@@ -125,7 +125,7 @@ django_pipeline==1.6.6 \
 django-pipeline-browserify==0.2.0 \
     --hash=sha256:af35789f08bb24a46a3b9a7289d6d6687b0c37df7336ff2edc17c7a6c38f2e64
 httplib2==0.9.2 \
-    --hash=sha256:c3aba1c9539711551f4d83e857b316b5134a1c4ddce98a875b7027be7dd6d988
+    --hash=sha256:fe187f315336c3daa6616d09f327a6e6560b082fce59723f77336329fdcbfc36
 google_api_python_client==1.5.0  \
     --hash=sha256:7b60666c321a3bd0b4b9e383cf44c0f6754b70844344b770ef4a474d775e1cfc
 oauth2client==2.0.1 \
