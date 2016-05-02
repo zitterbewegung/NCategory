@@ -9,9 +9,20 @@ from bungiesearch.managers import BungiesearchManager
 from django.utils import timezone
 
 
+class Address(models.Model):
+    last_name = models.TextField()
+    first_name = models.TextField()
+    address = models.TextField()
+    address2 = models.TextField()
+    city = models.TextField()
+    zipcode = models.CharField(max_length=10)
+    mail_state = models.TextField()
+    country = models.TextField()
+
+
 class Comment(models.Model):
     body = models.TextField()
-    # author = models.ForeignKey('Account')
+    author = models.ForeignKey('Account')
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
 
@@ -22,16 +33,24 @@ class Comment(models.Model):
         self.modified_at = timezone.now()
         return super(Comment, self).save(*args, **kwargs)
 
-
-class Address(models.Model):
+        
+class Account(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.TextField(unique=True)
     last_name = models.TextField()
     first_name = models.TextField()
     address = models.TextField()
-    address2 = models.TextField()
     city = models.TextField()
-    zipcode = models.CharField(max_length=10)
-    mail_state = models.TextField()
-    country = models.TextField()
+    created_at = models.DateTimeField()
+    modified_at = models.DateTimeField(default=timezone.now())
+    addresses = models.ManyToManyField(Address)
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at = timezone.now()
+        self.modified_at = timezone.now()
+        return super(Account, self).save(*args, **kwargs)
 
 
 class Tag(models.Model):
@@ -53,6 +72,7 @@ class Print(models.Model):
     tags = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
+    author = models.ForeignKey(Account, on_delete=models.CASCADE)
     objects = BungiesearchManager()
 
     def save(self, *args, **kwargs):
@@ -75,28 +95,6 @@ class Print(models.Model):
                                                       self.modified_at)
 
 
-class Account(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.TextField(unique=True)
-    password = models.TextField()
-    last_name = models.TextField()
-    first_name = models.TextField()
-    address = models.TextField()
-    city = models.TextField()
-    created_at = models.DateTimeField()
-    modified_at = models.DateTimeField(default=timezone.now())
-    address = models.ManyToManyField(Address)
-    prints = models.ManyToManyField(Print)
-    comments = models.ManyToManyField(Comment)
-
-    def save(self, *args, **kwargs):
-        ''' On save, update timestamps '''
-        if not self.id:
-            self.created_at = timezone.now()
-        self.modified_at = timezone.now()
-        return super(Account, self).save(*args, **kwargs)
-
-
 class PrintJob(models.Model):
     """Created when a print has to be printed"""
     mailing_address = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -109,8 +107,7 @@ class Job(models.Model):
 
     # currently, available types of job are:
     TYPES = (
-        ('fibonacci', 'fibonacci'),
-        ('power', 'power'),
+        ('generate_tags', 'generate_tags'),
     )
 
     # list of statuses that job can have
@@ -126,7 +123,8 @@ class Job(models.Model):
 
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField(default=timezone.now())
-    argument = models.PositiveIntegerField(null=True)
+    input_argument = models.TextField(null=True)
+    output_argument = models.TextField(null=True)
     result = models.IntegerField(null=True)
 
     def save(self, *args, **kwargs):
@@ -135,7 +133,9 @@ class Job(models.Model):
         if self.status == 'pending':
             from .tasks import TASK_MAPPING
             task = TASK_MAPPING[self.type]
-            task.delay(job_id=self.id, n=self.argument)
+            task.delay(job_id=self.id,
+                       inputFileName=self.input_argument,
+                       outputFileName=self.output_argument)
         ''' On save, update timestamps '''
         if not self.id:
             self.created_at = timezone.now()

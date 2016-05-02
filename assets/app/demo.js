@@ -8,38 +8,49 @@ import {cdn} from '../utils'
 import {Camera, Cursor, Light, Sky, CurvedImage, VideoSphere} from '../components/primitives'
 import {Sphere, Cube, Cylinder, Plane} from '../components/geometries'
 import {
+    SearchBox,
+    RefinementListFilter,
+    Hits,
+    HitsStats,
+    HitItemProps,
+    SearchkitComponent,
+    SelectedFilters,
+    MenuFilter,
+    HierarchicalMenuFilter,
+    Pagination,
+    ResetFilters,
     SearchkitManager,
     SearchkitProvider,
-    SearchBox,
-    Hits}from "searchkit";
+    NoHits
+} from "searchkit";
 require("./index.scss");
 var ReactTHREE = require('react-three');
 var THREE = require('three');
 var Modal = require('react-modal');
 
-const devhost = "http://192.168.99.100:9200/simplex"
+const devhost = "http://192.168.99.100:9200/main_index"
 const host = "https://d78cfb11f565e845000.qb0x.com/movies"
 const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
 })
 
-class ModelHits extends Hits {
-    renderResult(result) {
-	let url = "https://s3.amazonaws.com/ncategorizer-assets/3d-models/" + result._location
-	return (
-	        <div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
+const ModelHits = (props) => {
+
+
+	let url = "https://s3.amazonaws.com/ncategorizer-assets/3d-models/" + props.result._source.image_file;
+    return(
+      	<div className={props.bemBlocks.item().mix(props.bemBlocks.container("item"))} key={props.result._id}>
 		<a href={url} target="_blank">
 		
-	        <img className={this.bemBlocks.item("thumbnail")} src={result._source.thumbnail} width="180" height="270"/>
-		<div className={this.bemBlocks.item("title")}>{result._source.name}</div>
-		<div className={this.bemBlocks.item("description")}>{result._source.description}</div>
-		<div className={this.bemBlocks.item("price")}>{result._source.price}</div>
-		<ModalViewer></ModalViewer>		
-
+	        <img className={props.bemBlocks.item("thumbnail")} src={props.result._source.image_file} width="180" height="270"/>
+		<div className={props.bemBlocks.item("title")}>{props.result._source.title}</div>
+		<div className={props.bemBlocks.item("description")}>{props.result._source.description}</div>
+		<div className={props.bemBlocks.item("meta_data")}>{props.result._source.meta_data}</div>
+		<div className={props.bemBlocks.item("price")}>{props.result._source.price}</div>
+		
 		</a>
-		</div>
-	)
-    }
+	    </div>
+    );
 }
 var ModelRenderer = React.createClass({
     render: function() {
@@ -110,21 +121,7 @@ var ModalViewer = React.createClass({
     }
 });
 
-class MovieHits extends Hits {
-	renderResult(result) {
-		let url = "http://www.imdb.com/title/" + result._source.imdbId
-	         return (
-		
-			<div className={this.bemBlocks.item().mix(this.bemBlocks.container("item"))} key={result._id}>
-				<a href={url} target="_blank">
-					<img className={this.bemBlocks.item("poster")} src={result._source.poster} width="180" height="270"/>
-					<div className={this.bemBlocks.item("title")}>{result._source.title}</div>
-			        </a>
-	                    <ModalViewer></ModalViewer>		
-   		        </div>
-		)
-	}
-}
+
 class DemoScene extends React.Component {
   constructor(props) {
     super(props)
@@ -133,24 +130,30 @@ class DemoScene extends React.Component {
 
   render () {
 
-      return (
-	  <div>
-	      <div className="search-site">
-			<SearchkitProvider searchkit={sk}>
-				<div>
-					<div className="search-site__query">
-						<SearchBox autofocus={true} searchOnChange={true}/>
-					</div>
 
-					<div className="search-site__results">
-						<ModelHits hitsPerPage={10}/>
-					</div>
-				</div>
-			</SearchkitProvider>
+
+      return (<div>
+
+	      <SearchkitProvider searchkit={sk}>
+	      <div className="search">
+	      <div className="search__query">
+	      <SearchBox searchOnChange={true}  />
 	      </div>
-       </div>
-    )
-  }
+	      <div className="search__results">
+	      <Hits hitsPerPage={6} mod="sk-hits-grid" itemComponent={ModelHits}/>
+	      <NoHits translations={{
+		  "NoHits.NoResultsFound":"No movies found were found for {query}",
+		  "NoHits.DidYouMean":"Search for {suggestion}",
+		  "NoHits.SearchWithoutFilters":"Search for {query} without filters"
+	      }} suggestionsField="title"/>
+	      <Pagination showNumbers={true}/>
+	      </div>
+	      </div>
+	      </SearchkitProvider>
+
+	      </div>);
+         }
+   
 }
 
 

@@ -2,9 +2,8 @@ from functools import wraps
 
 from .celeryconf import app
 from .models import Job
-
-
 # decorator to avoid code duplication
+from .utility import convert_ply_pcd, pcd_to_vfh_histogram
 
 def update_job(fn):
     """Decorator that will update Job with result of the function"""
@@ -28,43 +27,18 @@ def update_job(fn):
     return wrapper
 
 
-# two simple numerical tasks that can be computationally intensive
-
 @app.task
-@update_job
-def power(n):
-    """Return 2 to the n'th power"""
-    return 2 ** n
-
-
-@app.task
-@update_job
-def fib(n):
-    """Return the n'th Fibonacci number.
-    """
-    if n < 0:
-        raise ValueError("Fibonacci numbers are only defined for n >= 0.")
-    return _fib(n)
-
-
-def _fib(n):
-    if n == 0 or n == 1:
-        return n
-    else:
-        return _fib(n - 1) + _fib(n - 2)
-
-
-@app.task
-@update_job
+@update_job    
 def generate_tags(modelFile):
     """Run classifiers so that the semantic information
        of the model will be filled in to the tags field.
     """
+
     pass
+
 
 # mapping from names to tasks
 
 TASK_MAPPING = {
-    'power': power,
-    'fibonacci': fib
+    'generate_tags': generate_tags,
 }
