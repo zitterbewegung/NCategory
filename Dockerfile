@@ -1,14 +1,26 @@
-FROM debian:jessie
+FROM ubuntu:14.04
 
 EXPOSE 8000
 CMD ["./bin/run-prod.sh"]
 
 RUN adduser --uid 1000 --disabled-password --gecos '' --no-create-home webdev
 
+
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential python3 python3-dev python3-pip \
-                                               libpq-dev postgresql-client gettext pcl-tools cmake && \
+                                               libpq-dev postgresql-client gettext \
+					        g++ gdb make cmake && \
     rm -rf /var/lib/apt/lists/*
+#Install libpcl
+
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q python-software-properties software-properties-common
+RUN add-apt-repository -y ppa:v-launchpad-jochen-sprickerhof-de/pcl # PCL
+RUN apt-get update
+# Install pcl
+RUN apt-get install -y libpcl-all
+
 RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
@@ -20,7 +32,7 @@ WORKDIR /app
 
 # Get pip8
 COPY bin/pipstrap.py bin/pipstrap.py
-RUN ./bin/pipstrap.py
+RUN python bin/pipstrap.py
 
 # First copy requirements.txt and peep so we can take advantage of
 # docker caching.
