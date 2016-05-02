@@ -20,7 +20,7 @@ WORKDIR /app
 
 # Get pip8
 COPY bin/pipstrap.py bin/pipstrap.py
-RUN ./bin/pipstrap.py
+RUN /usr/bin/env python bin/pipstrap.py
 
 # First copy requirements.txt and peep so we can take advantage of
 # docker caching.
