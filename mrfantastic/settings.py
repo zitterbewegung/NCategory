@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'storages',
     'analytical',
-    
+
 ]
 
 WEBPACK_LOADER = {

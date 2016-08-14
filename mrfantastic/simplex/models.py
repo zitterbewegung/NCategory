@@ -33,7 +33,7 @@ class Comment(models.Model):
         self.modified_at = timezone.now()
         return super(Comment, self).save(*args, **kwargs)
 
-        
+
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.TextField(unique=True)
@@ -44,7 +44,7 @@ class Account(models.Model):
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField(default=timezone.now())
     addresses = models.ManyToManyField(Address)
-    
+
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
