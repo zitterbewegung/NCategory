@@ -10,6 +10,7 @@ from .celeryconf import app
 
 
 class TestFeatureExtraction(TestCase):
+
     cube_obj= """
     v  1 -1 -1
     v -1 -1 -1
@@ -65,18 +66,12 @@ HEIGHT 1
 VIEWPOINT 0 0 0 1 0 0 0
 POINTS 1
 DATA ascii
-114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-"""
-    def setUp(self):
+114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 114.28571 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 """  # noqa
+
+    def setup(self):
         settings.CELERY_ALWAYS_EAGER = True
         app.conf.CELERY_ALWAYS_EAGER = True
 
-    def create_pcd_file():
-        """
-        
-        """
-        pass  
-        
     def test_convert_ply_pcd(self):
         """
         tests that using the subprocess ply2pcd program works.
@@ -84,10 +79,9 @@ DATA ascii
         with tempfile.NamedTemporaryFile(suffix='.obj') as fp:
             fp.write(self.cube_obj.encode('UTF-8'))
             fp.flush()
-            convert_ply_pcd(fp.name, '/tmp/cube.pcd')
-        
-            
-        with open('/tmp/cube.pcd', mode='r', encoding="UTF-8") as fout, tempfile.TemporaryFile(mode='r+', encoding="UTF-8") as result_file:
+            convert_obj_pcd(fp.name, '/tmp/cube.pcd')
+        with open('/tmp/cube.pcd', mode='r', encoding="UTF-8") as fout, \
+                 tempfile.TemporaryFile(mode='r+', encoding="UTF-8") as result_file:
             processed_string = fout.read()
             result_file.write(self.cube_ascii_pcd)
             result_file.flush()
