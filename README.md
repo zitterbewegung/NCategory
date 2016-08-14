@@ -5,6 +5,10 @@ mrfantastic
 
 [![Coverage status](https://img.shields.io/coveralls/aconsapart/mrfantastic/master.svg)](https://coveralls.io/r/aconsapart/mrfantastic)
 
+Setup 
+_____________
+First create a superuser using django admin and then initialize the superuser by creating a corresponding Accounts user. Then run loadtestdata.
+
 Run the tests
 -------------
 
