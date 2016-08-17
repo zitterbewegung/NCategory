@@ -19,4 +19,4 @@ node_modules/
 static/
 
 data/*
-assets/bundle/bundle.js
+assets/bundle/*

@@ -2,7 +2,7 @@ import boto
 import mimetypes
 import json
 
-conn = boto.connect_s3('AWS_KEY', 'AWS_SECRET')
+conn = boto.connect_s3(AWS_KEY, AWS_SECRET)
 
 def sign_s3_upload(request):
     object_name = request.GET['objectName']
