@@ -6,6 +6,7 @@ from rest_framework import routers
 from mrfantastic.base import views as base_views
 from mrfantastic.simplex import views as simplex_views
 
+
 router = routers.DefaultRouter()
 # register job endpoint in the router
 router.register(r'jobs', simplex_views.JobViewSet)
@@ -17,6 +18,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'search/', base_views.search, name='search'),
+    url(r's3/upload/', simplex.views, name='file_search'),
     # contribute.json url
     url(r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
         {'document_root': settings.ROOT}),

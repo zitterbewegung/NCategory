@@ -45,6 +45,7 @@ const ModelHits = (props) => {
 		
 	        <img className={props.bemBlocks.item("thumbnail")} src={props.result._source.image_file} width="180" height="270"/>
 		<div className={props.bemBlocks.item("title")}>{props.result._source.title}</div>
+			<div className={props.bemBlocks.item("description")}>{props.result._source.description}</div>
 		
 		<div className={props.bemBlocks.item("price")}>Available ${props.result._source.price}</div>
 		
