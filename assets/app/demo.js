@@ -27,7 +27,8 @@ require("./index.scss");
 var ReactTHREE = require('react-three');
 var THREE = require('three');
 var Modal = require('react-modal');
-
+var ReactS3Uploader = require('react-s3-uploader');
+const ip = "192.168.99.100"
 const devhost = "http://192.168.99.100:9200/main_index"
 const host = "https://d78cfb11f565e845000.qb0x.com/movies"
 const sk = new SearchkitManager(devhost, {
@@ -44,9 +45,8 @@ const ModelHits = (props) => {
 		
 	        <img className={props.bemBlocks.item("thumbnail")} src={props.result._source.image_file} width="180" height="270"/>
 		<div className={props.bemBlocks.item("title")}>{props.result._source.title}</div>
-		<div className={props.bemBlocks.item("description")}>{props.result._source.description}</div>
-		<div className={props.bemBlocks.item("meta_data")}>{props.result._source.meta_data}</div>
-		<div className={props.bemBlocks.item("price")}>{props.result._source.price}</div>
+		
+		<div className={props.bemBlocks.item("price")}>Available ${props.result._source.price}</div>
 		
 		</a>
 	    </div>
@@ -95,16 +95,16 @@ var ModalViewer = React.createClass({
     render: function() {
 	return (
 	    <div class="ModalViewer">
-		    <button onClick={this.openModal}>Open Modal</button>
-	             <Modal
-	    className="Modal__Bootstrap modal-dialog"
-	    closeTimeoutMS={150}
-	    isOpen={this.state.modalIsOpen}
-	    onRequestClose={this.handleModalCloseRequest}
+		<button onClick={this.openModal}>Open Modal</button>
+	        <Modal
+			 className="Modal__Bootstrap modal-dialog"
+		    closeTimeoutMS={150}
+		    isOpen={this.state.modalIsOpen}
+		    onRequestClose={this.handleModalCloseRequest}
 	        >
-		<div className="modal-content">
-		<div className="modal-header">
-		
+		    <div className="modal-content">
+			<div className="modal-header">
+			    
 		<button type="button" className="close" onClick={this.handleModalCloseRequest}>
 		<span aria-hidden="true">&times;</span>
 		<span className="sr-only">Close</span>
@@ -121,7 +121,6 @@ var ModalViewer = React.createClass({
     }
 });
 
-
 class DemoScene extends React.Component {
   constructor(props) {
     super(props)
@@ -132,26 +131,39 @@ class DemoScene extends React.Component {
 
 
 
-      return (<div>
-
-	      <SearchkitProvider searchkit={sk}>
+      return (
+	  <div>
+	  
+	  <SearchkitProvider searchkit={sk}>
 	      <div className="search">
-	      <div className="search__query">
-	      <SearchBox searchOnChange={true}  />
+		  <div className="search__query">
+		
+	              <SearchBox searchOnChange={true}/>
+		             <ReactS3Uploader
+				 signingUrl="/s3/sign"
+				 accept="application/sla"
+				 preprocess={this.onUploadStart}
+				 onProgress={this.onUploadProgress}
+				 onError={this.onUploadError}
+				 onFinish={this.onUploadFinish}
+				 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+				 contentDisposition="auto"
+				 server="http://192.168.99.100" />
+			     
+	 	  </div>
+		  <div className="search__results">
+		      <Hits hitsPerPage={6} mod="sk-hits-grid" itemComponent={ModelHits}/>
+		      <NoHits translations={{
+			  "NoHits.NoResultsFound":"No movies found were found for {query}",
+			  "NoHits.DidYouMean":"Search for {suggestion}",
+			  "NoHits.SearchWithoutFilters":"Search for {query} without filters"
+		      }} suggestionsField="title"/>
+		      <Pagination showNumbers={true}/>
+		  </div>
 	      </div>
-	      <div className="search__results">
-	      <Hits hitsPerPage={6} mod="sk-hits-grid" itemComponent={ModelHits}/>
-	      <NoHits translations={{
-		  "NoHits.NoResultsFound":"No movies found were found for {query}",
-		  "NoHits.DidYouMean":"Search for {suggestion}",
-		  "NoHits.SearchWithoutFilters":"Search for {query} without filters"
-	      }} suggestionsField="title"/>
-	      <Pagination showNumbers={true}/>
-	      </div>
-	      </div>
-	      </SearchkitProvider>
+	  </SearchkitProvider>
 
-	      </div>);
+	  </div>);
          }
    
 }

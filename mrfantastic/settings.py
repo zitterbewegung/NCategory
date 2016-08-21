@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'storages',
     'analytical',
-    
+
 ]
 
 WEBPACK_LOADER = {
@@ -231,6 +231,10 @@ STATIC_URL = config('STATIC_URL', '/static/')
 
 MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = config('MEDIA_URL', '/media/')
+
+#Uploading to S3
+AWS_KEY = config('AWS_KEY')
+AWS_SECRET = config('AWS_SECRET')
 
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
 
