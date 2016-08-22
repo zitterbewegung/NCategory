@@ -2,15 +2,23 @@
 
 # Create your views here.
 from rest_framework import mixins, viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
+from django.views.decorators.csrf import csrf_exempt
 from .models import Job
 from .serializers import JobSerializer
-from django.conf import settings
-import boto3
-import mimetypes
-import json
+from django.http import HttpResponse
+from rest_framework.parsers import FileUploadParser
 
+class FileUploadView(APIView):
+    parser_classes = (FileUploadParser,)
 
+    def put(self, request, filename, format=None):
+        file_obj = request.FILES['file']
+        # do some stuff with uploaded file
+        return Response(status=204)
+   
 
 class JobViewSet(mixins.CreateModelMixin,
                  mixins.ListModelMixin,
@@ -22,17 +30,4 @@ class JobViewSet(mixins.CreateModelMixin,
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 
-conn = boto3.resource(s3,aws_access_key_id=settings.AWS_KEY, aws_secret_access_key=settings.AWS_SECRET)
-
-def sign_s3_upload(request):
-    object_name = request.GET['objectName']
-    content_type = mimetypes.guess_type(object_name)[0]
-
-    signed_url = conn.generate_url(
-        300,
-        "PUT",
-        'ncategory-search-query',
-        'test-query' + object_name,
-        headers = {'Content-Type': content_type, 'x-amz-acl':'public-read'})
-
-    return HttpResponse(json.dumps({'signedUrl': signed_url}))
+    
