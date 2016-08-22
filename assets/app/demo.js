@@ -140,16 +140,7 @@ class DemoScene extends React.Component {
 		  <div className="search__query">
 		
 	              <SearchBox searchOnChange={true}/>
-		             <ReactS3Uploader
-				 signingUrl="/s3/sign"
-				 accept="application/sla"
-				 preprocess={this.onUploadStart}
-				 onProgress={this.onUploadProgress}
-				 onError={this.onUploadError}
-				 onFinish={this.onUploadFinish}
-				 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-				 contentDisposition="auto"
-				 server="http://192.168.99.100" />
+		            
 			     
 	 	  </div>
 		  <div className="search__results">
