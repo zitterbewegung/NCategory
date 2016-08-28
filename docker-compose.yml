@@ -21,7 +21,7 @@ rabbitmq:
 db:
   image: postgres:9.4
 web:
-  build: .
+  image: 568754562511.dkr.ecr.us-east-1.amazonaws.com/mrfantastic:latest
   ports:
     - "8000:8000"
   volumes:
@@ -45,7 +45,7 @@ web:
     ./bin/run-dev.sh
 # container with redis worker
 worker:
-  build: .
+  image: 568754562511.dkr.ecr.us-east-1.amazonaws.com/mrfantastic:latest 
   volumes:
     - .:/app
   links:
