@@ -34,6 +34,8 @@ const host = "https://d78cfb11f565e845000.qb0x.com/movies"
 const sk = new SearchkitManager(devhost, {
   multipleSearchers:false
 })
+var Dropzone = require('react-dropzone');
+var request = require('superagent');
 
 const ModelHits = (props) => {
 
@@ -98,11 +100,10 @@ var ModalViewer = React.createClass({
 	    <div class="ModalViewer">
 		<button onClick={this.openModal}>Open Modal</button>
 	        <Modal
-			 className="Modal__Bootstrap modal-dialog"
+		    className="Modal__Bootstrap modal-dialog"
 		    closeTimeoutMS={150}
 		    isOpen={this.state.modalIsOpen}
-		    onRequestClose={this.handleModalCloseRequest}
-	        >
+		    onRequestClose={this.handleModalCloseRequest}>
 		    <div className="modal-content">
 			<div className="modal-header">
 			    
@@ -121,6 +122,26 @@ var ModalViewer = React.createClass({
 	);
     }
 });
+var DropzoneDemo = React.createClass({
+    onDrop: function (files) {
+	var filename = files[0].name
+	var req = request.post('/upload/' + filename);
+	files.forEach((file)=> {
+	    req.attach(file.name, file);
+	});
+	req.end();
+    },
+
+    render: function () {
+	return (
+	    <div>
+	    <Dropzone multiple={false} onDrop={this.onDrop}>
+	    <div>Try dropping some files here, or click to select files to upload.</div>
+	    </Dropzone>
+	    </div>
+	);
+    }
+    });
 
 class DemoScene extends React.Component {
   constructor(props) {
@@ -131,17 +152,15 @@ class DemoScene extends React.Component {
   render () {
 
 
-
       return (
 	  <div>
 	  
 	  <SearchkitProvider searchkit={sk}>
 	      <div className="search">
 		  <div className="search__query">
-		
+	      
 	              <SearchBox searchOnChange={true}/>
-		            
-			     
+			  <DropzoneDemo />   
 	 	  </div>
 		  <div className="search__results">
 		      <Hits hitsPerPage={6} mod="sk-hits-grid" itemComponent={ModelHits}/>

@@ -14,10 +14,11 @@ from rest_framework.parsers import FileUploadParser
 class FileUploadView(APIView):
     parser_classes = (FileUploadParser,)
 
-    def put(self, request, filename, format=None):
+    def post(self, request, filename, format=None):
         file_obj = request.FILES['file']
         # do some stuff with uploaded file
-        return Response(status=204)
+        
+        return Response("Successful upload",status=204)
    
 
 class JobViewSet(mixins.CreateModelMixin,
