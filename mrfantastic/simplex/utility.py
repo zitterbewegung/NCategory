@@ -25,7 +25,7 @@ def train_model(directory):
 
 
 def query_model(queryFile):
-    with tempfile.NamedTemporaryFile(suffix='.pcd') as tf: 
-        convert_obj_pcd(queryFile, tf)
-        args_query_model = ['./bin/nearest_neighbors', 'queryFile']
-        subprocess.call(args_query_model)
+    #with tempfile.NamedTemporaryFile(suffix='.pcd') as tf: 
+        #convert_obj_pcd(queryFile, tf)
+    args_query_model = ['./bin/nearest_neighbors', queryFile]
+    subprocess.call(args_query_model)
