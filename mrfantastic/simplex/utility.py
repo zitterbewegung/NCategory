@@ -20,7 +20,7 @@ def convert_obj_pcd(inputFileName, outputFileName):
 
 def train_model(directory):
     """Trains a model using knearestneighbors"""
-    args_build_tree = ['./build/build_tree', '~/datasets/GroundTruthDatabase/']
+    args_build_tree = ['./build/build_tree', '/app/data/GroundTruthDatabase/']
     subprocess.call(args)
 
 
