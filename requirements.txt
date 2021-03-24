@@ -132,8 +132,9 @@ pyasn1==0.1.9 \
   --hash=sha256:28fee44217991cfad9e6a0b9f7e3f26041e21ebc96629e94e585ccd05d49fa65
 pyasn1_modules==0.0.8 \
   --hash=sha256:6c955210b86fcff3420957072280560ddaf183aa761fb76240c20c322e01021d
-rsa==3.4.2 \
-  --hash=sha256:43f682fea81c452c98d09fc316aae12de6d30c4b5c84226642cf8f8fd1c93abd
+rsa==4.1 \
+  --hash=sha256:2c7c8624ef9b55bacc3be8bdcec5cefc381ddc156e968d6437fe0fd08af00eb0 \
+  --hash=sha256:6fa6a54eb72bfc0abca7f27880b978b14a643ba2a6ad9f4a56a95be82129ca1b
 simplejson==3.8.2 \
   --hash=sha256:d58439c548433adcda98e695be53e526ba940a4b9c44fb9a05d92cd495cdd47f
 uritemplate==0.6 \
