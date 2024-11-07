@@ -1,66 +1,98 @@
-elasticsearch:
-  image: elasticsearch:2.1.1
-  command: elasticsearch -Des.network.host=0.0.0.0
-  ports:
-    - "9200:9200"
-    - "9300:9300"
-  volumes:
-    - ./config:/usr/share/elasticsearch/config
-# redis container
-redis:
-  image: redis:3.0.7
-rabbitmq:
-  image: "rabbitmq:3.6.0"
-  hostname: "rmq"
-  ports:
-    - "5672:5672"
-    - "15672:15672"
-  environment:
-    - RABBITMQ_DEFAULT_USER=guest
-    - RABBITMQ_DEFAULT_PASSWORD=guest
-db:
-  image: postgres:9.4
-web:
-  #image: 568754562511.dkr.ecr.us-east-1.amazonaws.com/mrfantastic:latest
-  build: .
-  ports:
-    - "8000:8000"
-  volumes:
-    - ~/datasets/:/app/data
-    - .:/app
-  links:
-    - db
-    - elasticsearch
-    - rabbitmq
-    - redis
-  environment:
-    - PYTHONDONTWRITEBYTECODE=1
-    - DATABASE_URL=postgres://postgres@db/postgres
-    - DEBUG=True
-    - ALLOWED_HOSTS=localhost,127.0.0.1,
-    - SECRET_KEY=59114b6a-2858-4caf-8878-482a24ee9542
-    - DSN=https://762be8db9221413eb6079a4f0e2feb2e:225a22a4224c4fdcb2a8a12c2b6e5a16@app.getsentry.com/66980
-    - NEW_RELIC_LICENSE_KEY=001b141e3345317e86299f2337a9c8cd1718d348
-    - NEW_RELIC_APP_NAME=mrfantastic
-  command:
-    ./bin/run-dev.sh
-# container with redis worker
-worker:
-  #image: 568754562511.dkr.ecr.us-east-1.amazonaws.com/mrfantastic:latest 
-  build: .
-  volumes:
-    - .:/app
-  links:
-    - db
-    - rabbitmq
-    - redis
-  command: ./bin/run-celery.sh
-  environment:
-    - PYTHONDONTWRITEBYTECODE=1
-    - DATABASE_URL=postgres://postgres@db/postgres
-    - DEBUG=True
-    - ALLOWED_HOSTS=localhost,127.0.0.1,
-    - SECRET_KEY=59114b6a-2858-4caf-8878-482a24ee9542
-    - DSN=https://762be8db9221413eb6079a4f0e2feb2e:225a22a4224c4fdcb2a8a12c2b6e5a16@app.getsentry.com/66980
-    - NEW_RELIC_LICENSE_KEY=001b141e3345317e86299f2337a9c8cd1718d348
-    - NEW_RELIC_APP_NAME=mrfantastic
+version: '3.8'  # Specify the Docker Compose file format version
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.0  # Updated to a more recent version
+    environment:
+      - discovery.type=single-node  # Required for Elasticsearch in a single-node setup
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m  # Set JVM options to limit memory usage
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.2.6  # Updated to a newer version
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: "rabbitmq:3.9-management"  # Includes the management plugin
+    hostname: "rmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # RabbitMQ Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASSWORD=guest
+    networks:
+      - app-network
+
+  db:
+    image: postgres:13  # Updated to a more recent version
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres  # Set a password
+      POSTGRES_DB: postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/datasets/:/app/data
+      - .:/app
+    depends_on:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - redis
+    environment:
+      PYTHONDONTWRITEBYTECODE: '1'
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      DEBUG: 'True'
+      ALLOWED_HOSTS: 'localhost,127.0.0.1'
+      SECRET_KEY: 'your-secret-key'
+      DSN: 'your-dsn'
+      NEW_RELIC_LICENSE_KEY: 'your-new-relic-license-key'
+      NEW_RELIC_APP_NAME: 'mrfantastic'
+    command: ./bin/run-dev.sh
+    networks:
+      - app-network
+
+  worker:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - rabbitmq
+      - redis
+    command: ./bin/run-celery.sh
+    environment:
+      PYTHONDONTWRITEBYTECODE: '1'
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      DEBUG: 'True'
+      ALLOWED_HOSTS: 'localhost,127.0.0.1'
+      SECRET_KEY: 'your-secret-key'
+      DSN: 'your-dsn'
+      NEW_RELIC_LICENSE_KEY: 'your-new-relic-license-key'
+      NEW_RELIC_APP_NAME: 'mrfantastic'
+    networks:
+      - app-network
+
+volumes:
+  esdata:
+  dbdata:
+
+networks:
+  app-network:
